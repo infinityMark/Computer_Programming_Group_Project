@@ -59,6 +59,10 @@ public:
 		year = y;
 		GPA = gpa;
 	}
+	void setName(string n) {
+		name = "";
+		name = n;
+	}
 
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
@@ -92,25 +96,29 @@ void F3() {
 
 }
 
-void copy_object_data(vector <Student_record> move_to_arrary) {
+void copy_object_data(vector <Student_record> student_record_collection_oringinal) {
 	// this function use to copy obejct vector
 	for (int i = 0; i < student_record_collection.size(); i++) {
-		move_to_arrary.push_back(student_record_collection[i]);
+		student_record_collection_oringinal.push_back(student_record_collection[i]);
 	}
 }
 
-void show_edited_information(string before,string current) {
+void show_edited_information(string before, string current) {
 	//int margin = abs(current.size() - before.size());
-	cout << "Before" << setw(fabs(before.size()-6)+4+7) <<"Current"<<endl;
+	cout << "Before" << setw(fabs(before.size() - 6) + 4 + 7) << "Current" << endl;
 	copy_character("-", before.size(), 0);
-	cout << setw(5+ fabs(current.size() - before.size()));
+	cout << setw(5 + fabs(current.size() - before.size()));
 	copy_character("-", current.size(), 1);
 	cout << before << " -> " << current;
 };
 void F4() {
 	string inputed_ID = "";
+	string previous_data = "";
+	string current_data = "";
+	char name[40] = {};
 	char option;
 	bool valid_SID = false;
+	int direct_object_location;
 
 	cout << "Please input a StudentID for check: ";
 	cin >> inputed_ID;
@@ -120,6 +128,7 @@ void F4() {
 	for (int i = 0; i < student_record_collection.size(); i++) {
 		if (inputed_ID == student_record_collection[i].getS_ID()) {
 			valid_SID = true;
+			direct_object_location = 0;
 		}
 	}
 	if (valid_SID == true) {
@@ -137,14 +146,21 @@ void F4() {
 
 			cout << "\n\n";
 
-			copy_object_data(student_record_collection_oringinal);
 			switch (option) {
 				//case '0': showInfo(); break;
 			case '1':
-				show_edited_information(student_record_collection[0].getS_ID(), student_record_collection[0].getS_ID());
+				//copy_object_data(student_record_collection_oringinal);
+				previous_data = student_record_collection[direct_object_location].getName();
+				cout << "The current name of student" << "(" << inputed_ID<< ")" << " is :" << previous_data << endl << endl;
+				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
+				//cin.getline(name, 40, '\n');
+				//current_data = name;
+				student_record_collection[direct_object_location].setName(current_data);
+
+				show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
 				break;
 			case '2':
-				show_edited_information(student_record_collection[0].getS_ID(), student_record_collection[0].getS_ID());
+				//show_edited_information(student_record_collection[0].getS_ID(), student_record_collection[0].getS_ID());
 				//copy_object_data(student_record_collection_oringinal);
 				break;
 			case '3':
@@ -176,6 +192,7 @@ int main() {
 
 	//loading_animation();
 
+	//temporary data
 	Student_record S243560;
 	S243560.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
 	student_record_collection.push_back(S243560);
