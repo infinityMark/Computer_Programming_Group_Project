@@ -3,6 +3,7 @@
 #include <string>
 #include <windows.h>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 void menu_word_output(int order, string word) {
@@ -51,7 +52,7 @@ void loading_animation() {
 
 class Student_record {
 public:
-	void setRecord(string n, string m, string s_id, int y, float gpa) {
+	void setRecord(string n, string s_id, string m, int y, float gpa) {
 		name = n;
 		S_ID = s_id;
 		major = m;
@@ -62,6 +63,12 @@ public:
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
 	}
+	string getS_ID() {
+		return S_ID;
+	}
+	string getName() {
+		return name;
+	}
 private:
 	string name;	// student's name
 	string S_ID;	// student's id
@@ -71,7 +78,6 @@ private:
 	int year;		// student's year
 	float GPA;		// student's gpa
 };
-
 vector <Student_record> student_record_collection;//this vector use to contain any object inside
 
 void F1() {
@@ -88,12 +94,72 @@ void F3() {
 
 void copy_object_data(vector <Student_record> move_to_arrary) {
 	// this function use to copy obejct vector
-	for (int i; i < student_record_collection.size(); i++) {
+	for (int i = 0; i < student_record_collection.size(); i++) {
 		move_to_arrary.push_back(student_record_collection[i]);
 	}
 }
+
+void show_edited_information(string before,string current) {
+	//int margin = abs(current.size() - before.size());
+	cout << "Before" << setw(fabs(before.size()-6)+4+7) <<"Current"<<endl;
+	copy_character("-", before.size(), 0);
+	cout << setw(5+ fabs(current.size() - before.size()));
+	copy_character("-", current.size(), 1);
+	cout << before << " -> " << current;
+};
 void F4() {
-	
+	string inputed_ID = "";
+	char option;
+	bool valid_SID = false;
+
+	cout << "Please input a StudentID for check: ";
+	cin >> inputed_ID;
+	vector <Student_record> student_record_collection_oringinal;
+
+	// check for whether the studentID exits or not
+	for (int i = 0; i < student_record_collection.size(); i++) {
+		if (inputed_ID == student_record_collection[i].getS_ID()) {
+			valid_SID = true;
+		}
+	}
+	if (valid_SID == true) {
+		do {
+			cout << "\n\n";
+			cout << "Action	for Student ID: " << inputed_ID << endl;
+			cout << "**** " << "Edit Student Menu" << " ****" << endl;
+			menu_word_output(1, "Edit Student Name");
+			menu_word_output(2, "Edit Major");
+			menu_word_output(3, "Edit Subject List");
+			menu_word_output(4, "Return to Main Menu");
+			copy_character("*", 29, 1);
+			cout << "Option (1-4): ";
+			cin >> option;
+
+			cout << "\n\n";
+
+			copy_object_data(student_record_collection_oringinal);
+			switch (option) {
+				//case '0': showInfo(); break;
+			case '1':
+				show_edited_information(student_record_collection[0].getS_ID(), student_record_collection[0].getS_ID());
+				break;
+			case '2':
+				show_edited_information(student_record_collection[0].getS_ID(), student_record_collection[0].getS_ID());
+				//copy_object_data(student_record_collection_oringinal);
+				break;
+			case '3':
+				//copy_object_data(student_record_collection_oringinal);
+				break;
+			case '4':
+				cout << "You are returing to the Main Menu." << endl;
+				//loading_animation();
+				break;
+			default:
+				cout << "No such function option " << option << endl;
+				break;
+			}
+		} while (option == 4);
+	}
 }
 
 void F5() {
@@ -108,10 +174,11 @@ int main() {
 	char prog_choice;
 	bool loading_data = false;
 
-	loading_animation();
-	Student_record S232210;
-	S232210.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
-	student_record_collection.push_back(S232210);
+	//loading_animation();
+
+	Student_record S243560;
+	S243560.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
+	student_record_collection.push_back(S243560);
 
 
 	cout << "Welcome to use Student Management System" << endl;
