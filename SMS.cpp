@@ -114,13 +114,24 @@ void show_edited_information(string before, string current) {
 	//int margin = abs(current.size() - before.size());
 	cout << "Before" << setw(fabs(before.size() - 6) + 4 + 7) << "Current" << endl;
 	copy_character("-", before.size(), 0);
-	cout << setw(5 + fabs(current.size() - before.size()));
+	cout << setw(5);
 	copy_character("-", current.size(), 1);
 	cout << before << " -> " << current;
 };
+
+void prompt_change_student_information(string i, string p,string c,string confirma,string mission) {
+	cout << "The current " << mission << " of student" << "(" << i << ")" << " is :" << p << endl << endl;
+	cout << "Enter a new to the student " << "(" << i << "): ";
+	cin.ignore();
+	getline(cin, c);
+
+	cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+	cin >> confirma;
+	cout << endl;
+}
 void F4() {
 	string inputed_ID = "";
-	char name[40] = {};
 	char option;
 	bool valid_SID = false;
 	int direct_object_location;
@@ -159,14 +170,7 @@ void F4() {
 				//case '0': showInfo(); break;
 			case '1':
 				previous_data = student_record_collection[direct_object_location].getName();
-				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << previous_data << endl << endl;
-				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
-				cin.ignore();
-				getline(cin, current_data);
-
-				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-				
-				cin >> confirmation;
+				prompt_change_student_information(inputed_ID, previous_data, current_data,confirmation, "name");
 
 				if (confirmation == "Y" || confirmation == "y") {
 					student_record_collection[direct_object_location].setName(current_data);
@@ -180,6 +184,27 @@ void F4() {
 				}
 				break;
 			case '2':
+				previous_data = student_record_collection[direct_object_location].getMajor();
+				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << previous_data << endl << endl;
+				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
+				cin.ignore();
+				getline(cin, current_data);
+
+				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+				cin >> confirmation;
+				cout << endl;
+
+				if (confirmation == "Y" || confirmation == "y") {
+					student_record_collection[direct_object_location].setMajor(current_data);
+					show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+				}
+				else if (confirmation == "N" || confirmation == "n") {
+					cout << "The change is readly withdraw." << endl;
+				}
+				else {
+					cout << "Invalid input!";
+				}
 				break;
 			case '3':
 				//copy_object_data(student_record_collection_oringinal);
@@ -192,7 +217,7 @@ void F4() {
 				cout << "No such function option " << option << endl;
 				break;
 			}
-		} while (option == 4);
+		} while (option != '4');
 	}
 }
 
