@@ -63,6 +63,10 @@ public:
 		name = "";
 		name = n;
 	}
+	void setMajor(string m) {
+		major = "";
+		major = m;
+	}
 
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
@@ -72,6 +76,9 @@ public:
 	}
 	string getName() {
 		return name;
+	}
+	string getMajor() {
+		return major;
 	}
 private:
 	string name;	// student's name
@@ -113,8 +120,6 @@ void show_edited_information(string before, string current) {
 };
 void F4() {
 	string inputed_ID = "";
-	string previous_data = "";
-	string current_data = "";
 	char name[40] = {};
 	char option;
 	bool valid_SID = false;
@@ -133,6 +138,10 @@ void F4() {
 	}
 	if (valid_SID == true) {
 		do {
+			string previous_data = "";
+			string current_data = "";
+			string confirmation = "";
+
 			cout << "\n\n";
 			cout << "Action	for Student ID: " << inputed_ID << endl;
 			cout << "**** " << "Edit Student Menu" << " ****" << endl;
@@ -149,19 +158,28 @@ void F4() {
 			switch (option) {
 				//case '0': showInfo(); break;
 			case '1':
-				//copy_object_data(student_record_collection_oringinal);
 				previous_data = student_record_collection[direct_object_location].getName();
-				cout << "The current name of student" << "(" << inputed_ID<< ")" << " is :" << previous_data << endl << endl;
+				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << previous_data << endl << endl;
 				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
-				//cin.getline(name, 40, '\n');
-				//current_data = name;
-				student_record_collection[direct_object_location].setName(current_data);
+				cin.ignore();
+				getline(cin, current_data);
 
-				show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
+				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+				
+				cin >> confirmation;
+
+				if (confirmation == "Y" || confirmation == "y") {
+					student_record_collection[direct_object_location].setName(current_data);
+					show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
+				}
+				else if (confirmation == "N" || confirmation == "n") {
+					cout << "The change is readly withdraw." << endl;
+				}
+				else {
+					cout << "Invalid input!";
+				}
 				break;
 			case '2':
-				//show_edited_information(student_record_collection[0].getS_ID(), student_record_collection[0].getS_ID());
-				//copy_object_data(student_record_collection_oringinal);
 				break;
 			case '3':
 				//copy_object_data(student_record_collection_oringinal);
