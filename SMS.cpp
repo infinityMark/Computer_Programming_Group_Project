@@ -119,7 +119,7 @@ void show_edited_information(string before, string current) {
 	cout << before << " -> " << current;
 };
 
-void prompt_change_student_information(string i, string p,string c,string confirma,string mission) {
+void prompt_change_student_information(string i, string p, string c, string confirma, string mission) {
 	cout << "The current " << mission << " of student" << "(" << i << ")" << " is :" << p << endl << endl;
 	cout << "Enter a new to the student " << "(" << i << "): ";
 	cin.ignore();
@@ -170,7 +170,15 @@ void F4() {
 				//case '0': showInfo(); break;
 			case '1':
 				previous_data = student_record_collection[direct_object_location].getName();
-				prompt_change_student_information(inputed_ID, previous_data, current_data,confirmation, "name");
+				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << previous_data << endl << endl;
+				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
+				cin.ignore();
+				getline(cin, current_data);
+
+				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+				cin >> confirmation;
+				cout << endl;
 
 				if (confirmation == "Y" || confirmation == "y") {
 					student_record_collection[direct_object_location].setName(current_data);
