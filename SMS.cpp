@@ -213,9 +213,8 @@ void F4() {
 				cin >> confirmation;
 				cout << endl;
 
-				current_data = name_upper(current_data);
-
 				if (confirmation == "Y" || confirmation == "y") {
+					current_data = name_upper(current_data);
 					student_record_collection[direct_object_location].setName(current_data);
 					show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
 				}
@@ -238,9 +237,8 @@ void F4() {
 				cin >> confirmation;
 				cout << endl;
 
-				current_data = major_upper(current_data);
-
 				if (confirmation == "Y" || confirmation == "y") {
+					current_data = major_upper(current_data);
 					student_record_collection[direct_object_location].setMajor(current_data);
 					show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
 				}
