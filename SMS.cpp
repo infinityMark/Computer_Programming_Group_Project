@@ -130,6 +130,20 @@ void prompt_change_student_information(string i, string p, string c, string conf
 	cin >> confirma;
 	cout << endl;
 }
+
+string name_upper(string name) {
+	// not finish
+	bool space = false;
+	for (int i = 0; i < name.size(); i++) {
+		if (name[i] >= 'a' && name[i] <= 'z') {
+			name[i] = name[i] - 'a' + 'A';
+		}
+		if (name[i] == ' ') {
+			space = true;
+		}
+	}
+	return name;
+}
 void F4() {
 	string inputed_ID = "";
 	char option;
@@ -179,6 +193,8 @@ void F4() {
 
 				cin >> confirmation;
 				cout << endl;
+
+				current_data = name_upper(current_data);
 
 				if (confirmation == "Y" || confirmation == "y") {
 					student_record_collection[direct_object_location].setName(current_data);
