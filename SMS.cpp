@@ -132,17 +132,36 @@ void prompt_change_student_information(string i, string p, string c, string conf
 }
 
 string name_upper(string name) {
-	// not finish
 	bool space = false;
 	for (int i = 0; i < name.size(); i++) {
-		if (name[i] >= 'a' && name[i] <= 'z') {
-			name[i] = name[i] - 'a' + 'A';
+		// surname check
+		if (space == false) {
+			if (name[i] >= 'a' && name[i] <= 'z') {
+				name[i] = name[i] - 'a' + 'A';
+			}
+			if (name[i] == ' ') {
+				space = true;
+			}
 		}
-		if (name[i] == ' ') {
-			space = true;
+		else {
+			// first name check
+			if (name[i] >= 'a' && name[i] <= 'z' && name[i-1]==' ') {
+				name[i] = name[i] - 'a' + 'A';
+			}
 		}
 	}
 	return name;
+}
+
+string major_upper(string major) {
+	major[0] = major[0] - 'a' + 'A';
+
+	for (int i = 1; i < major.size(); i++) {
+		if (major[i-1] == ' ') {
+			major[i] = major[i] - 'a' + 'A';
+		}
+	}
+	return major;
 }
 void F4() {
 	string inputed_ID = "";
@@ -218,6 +237,8 @@ void F4() {
 
 				cin >> confirmation;
 				cout << endl;
+
+				current_data = major_upper(current_data);
 
 				if (confirmation == "Y" || confirmation == "y") {
 					student_record_collection[direct_object_location].setMajor(current_data);
