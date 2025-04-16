@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <vector>
 #include <cmath>
+#include <cctype>
 using namespace std;
 
 void menu_word_output(int order, string word) {
@@ -84,7 +85,7 @@ private:
 	string name;	// student's name
 	string S_ID;	// student's id
 	string major;	// student's major
-	vector <string> course;
+	vector <string> subject_information = {{}}; // subject cord and Grade
 
 	int year;		// student's year
 	float GPA;		// student's gpa
@@ -134,10 +135,9 @@ void prompt_change_student_information(string i, string p, string c, string conf
 string name_upper(string name) {
 	bool space = false;
 	for (int i = 0; i < name.size(); i++) {
-		// surname check
 		if (space == false) {
 			if (name[i] >= 'a' && name[i] <= 'z') {
-				name[i] = name[i] - 'a' + 'A';
+				name[i] = toupper(name[i]);
 			}
 			if (name[i] == ' ') {
 				space = true;
@@ -145,8 +145,11 @@ string name_upper(string name) {
 		}
 		else {
 			// first name check
-			if (name[i] >= 'a' && name[i] <= 'z' && name[i-1]==' ') {
-				name[i] = name[i] - 'a' + 'A';
+			if (name[i] >= 'a' && name[i] <= 'z' && name[i - 1] == ' ') {
+				name[i] = toupper(name[i]);
+			}
+			if (name[i] >= 'A' && name[i] <= 'Z' && name[i - 1] != ' ') {
+				name[i] = tolower(name[i]);
 			}
 		}
 	}
@@ -157,8 +160,11 @@ string major_upper(string major) {
 	major[0] = major[0] - 'a' + 'A';
 
 	for (int i = 1; i < major.size(); i++) {
-		if (major[i-1] == ' ') {
+		if (major[i - 1] == ' ') {
 			major[i] = major[i] - 'a' + 'A';
+		}
+		if (major[i] >= 'A' && major[i] <= 'Z' && major[i - 1] != ' ') {
+			major[i] = tolower(major[i]);
 		}
 	}
 	return major;
@@ -203,7 +209,9 @@ void F4() {
 				//case '0': showInfo(); break;
 			case '1':
 				previous_data = student_record_collection[direct_object_location].getName();
-				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << previous_data << endl << endl;
+				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
+				copy_character("-", previous_data.length(), 1);
+				cout << endl;
 				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
 				cin.ignore();
 				getline(cin, current_data);
@@ -211,7 +219,7 @@ void F4() {
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
 				cin >> confirmation;
-				cout << endl;
+				cout << endl << endl;
 
 				if (confirmation == "Y" || confirmation == "y") {
 					current_data = name_upper(current_data);
@@ -224,10 +232,13 @@ void F4() {
 				else {
 					cout << "Invalid input!";
 				}
+				cout << endl;
 				break;
 			case '2':
 				previous_data = student_record_collection[direct_object_location].getMajor();
-				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << previous_data << endl << endl;
+				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
+				copy_character("-", previous_data.length(), 1);
+				cout << endl;
 				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
 				cin.ignore();
 				getline(cin, current_data);
