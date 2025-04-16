@@ -68,9 +68,23 @@ public:
 		major = "";
 		major = m;
 	}
+	void set_subject_information(vector <string> subject_i) {
+		for (int i = 0; i < subject_i.size(); i++) {
+			for (int j = 0; j < 1; i++) {
+				subject_i[i][j] = (subject_i[i][j]);
+			}
+		}
+	}
 
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
+	}
+	void getSubject_information() {
+		for (int i = 0; i < subject_information.size(); i++) {
+			for (int j = 0; j < 1; j++) {
+				cout << subject_information[i][j] << endl;
+			}
+		}
 	}
 	string getS_ID() {
 		return S_ID;
@@ -85,7 +99,7 @@ private:
 	string name;	// student's name
 	string S_ID;	// student's id
 	string major;	// student's major
-	vector <string> subject_information = {{}}; // subject cord and Grade
+	vector <string> subject_information = {{"",""}}; // should use 2-D arrary subject-code and Grade
 
 	int year;		// student's year
 	float GPA;		// student's gpa
@@ -261,6 +275,7 @@ void F4() {
 				}
 				break;
 			case '3':
+				student_record_collection[direct_object_location].getSubject_information();
 				//copy_object_data(student_record_collection_oringinal);
 				break;
 			case '4':
@@ -292,6 +307,7 @@ int main() {
 	//temporary data
 	Student_record S243560;
 	S243560.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
+	S243560.set_subject_information({"ENG2042","A"});
 	student_record_collection.push_back(S243560);
 
 
