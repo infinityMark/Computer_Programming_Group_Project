@@ -68,25 +68,33 @@ public:
 		major = "";
 		major = m;
 	}
-	/*void set_subject_information(vector <string> subject_i) {
+	void setSubject_information(const vector<vector<string>>& subject_i) {
 		for (int i = 0; i < subject_i.size(); i++) {
-			for (int j = 0; j < 1; i++) {
-				subject_information[i].push_back(subject_i[i][0]);
+			// 确保 subject_i[i] 至少有 2 个元素
+			if (subject_i[i].size() < 2) {
+				continue; // 或者抛出异常
 			}
+			if (i >= subject_information.size()) {
+				subject_information.push_back(vector<string>(2)); // 假设每行 2 列
+			}
+			subject_information[i][0] = subject_i[i][0];
+			subject_information[i][1] = subject_i[i][1];
 		}
-	}*/
+	}
 
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
 	}
 	
-	/*void getSubject_information() {
-		for (int i = 0; i < subject_information.size(); i++) {
-			for (int j = 0; j < 1; j++) {
-				cout << subject_information[i][0] << endl;
+	void copySubjectInformation(vector<vector<string>>& target) {
+		target.clear();  // 清空目标数组
+
+		for (const auto& row : subject_information) {
+			if (row.size() >= 2) {
+				target.push_back({ row[0], row[1] });  // 复制前两列
 			}
 		}
-	}*/
+	}
 	string getS_ID() {
 		return S_ID;
 	}
@@ -100,7 +108,7 @@ private:
 	string name;	// student's name
 	string S_ID;	// student's id
 	string major;	// student's major
-	vector <string> subject_information; // should use 2-D arrary subject-code and Grade
+	vector<vector <string>> subject_information; // should use 2-D arrary store subject-code and Grade
 
 	int year;		// student's year
 	float GPA;		// student's gpa
@@ -204,6 +212,7 @@ void F4() {
 	if (valid_SID == true) {
 		do {
 			string previous_data = "";
+			vector <vector<string>> previous_data_arrary;
 			string current_data = "";
 			string confirmation = "";
 
@@ -227,7 +236,7 @@ void F4() {
 				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
-				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
+				cout << "Enter a new name to the student " << "(" << inputed_ID << "): ";
 				cin.ignore();
 				getline(cin, current_data);
 
@@ -254,7 +263,7 @@ void F4() {
 				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
-				cout << "Enter a new to the student " << "(" << inputed_ID << "): ";
+				cout << "Enter a new major to the student " << "(" << inputed_ID << "): ";
 				cin.ignore();
 				getline(cin, current_data);
 
@@ -276,8 +285,36 @@ void F4() {
 				}
 				break;
 			case '3':
-				//student_record_collection[direct_object_location].getSubject_information();
-				//copy_object_data(student_record_collection_oringinal);
+				student_record_collection[direct_object_location].copySubjectInformation(previous_data_arrary);
+				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl;
+				for (int i = 0; i < 2; i++) {
+					for (int j = 0; j < 2; j++) {
+						cout << previous_data_arrary[i][j] << " ";
+					}
+					cout << endl;
+				}
+				copy_character("-", 9, 1);
+				cout << endl;
+				cout << "Enter a new subject code or subject name to the student " << "(" << inputed_ID << "): ";
+				cin.ignore();
+				getline(cin, current_data);
+
+				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+				cin >> confirmation;
+				cout << endl;
+
+				if (confirmation == "Y" || confirmation == "y") {
+					//current_data = major_upper(current_data);
+					//student_record_collection[direct_object_location].setMajor(current_data);
+					//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+				}
+				else if (confirmation == "N" || confirmation == "n") {
+					cout << "The change is readly withdraw." << endl;
+				}
+				else {
+					cout << "Invalid input!";
+				}
 				break;
 			case '4':
 				cout << "You are returing to the Main Menu." << endl;
@@ -308,7 +345,7 @@ int main() {
 	//temporary data
 	Student_record S243560;
 	S243560.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
-	//S243560.set_subject_information({{"ENG2042","A"},{"ENG2042","A"} });
+	S243560.setSubject_information({{"ENG2042","A"},{"ENG2219","A"}});
 	student_record_collection.push_back(S243560);
 
 
