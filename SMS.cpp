@@ -69,6 +69,7 @@ public:
 		major = m;
 	}
 	void setSubject_information(const vector<vector<string>>& subject_i) {
+		// this is use to set value in the beginning
 		for (int i = 0; i < subject_i.size(); i++) {
 			// 确保 subject_i[i] 至少有 2 个元素
 			if (subject_i[i].size() < 2) {
@@ -82,18 +83,39 @@ public:
 		}
 	}
 
+	void changeSubject_information(string aim_subject,string change_subject,int code_or_grade) {
+		for (int i = 0; i < subject_information.size(); i++) {
+			if (subject_information[i][0] == aim_subject) {
+				subject_information[i][code_or_grade] = change_subject;
+				break;
+			}
+		}
+	}
+
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
 	}
 	
 	void copySubjectInformation(vector<vector<string>>& target) {
 		target.clear();  // 清空目标数组
-
 		for (const auto& row : subject_information) {
 			if (row.size() >= 2) {
 				target.push_back({ row[0], row[1] });  // 复制前两列
 			}
 		}
+	}
+	void printSubject_information() {
+		for (int i = 0; i < subject_information.size();i++) {
+			cout << subject_information[i][0] << subject_information[i][1] << endl;
+		}
+	}
+	bool returnSubject_information_exist(string check) {
+		for (int i = 0; i < subject_information.size(); i++) {
+			if (subject_information[i][0] == check) {
+				return true;
+			}
+		}
+		return false;
 	}
 	string getS_ID() {
 		return S_ID;
@@ -249,6 +271,7 @@ void F4() {
 					current_data = name_upper(current_data);
 					student_record_collection[direct_object_location].setName(current_data);
 					show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
+					cout << "The change is successfully." << endl;
 				}
 				else if (confirmation == "N" || confirmation == "n") {
 					cout << "The change is readly withdraw." << endl;
@@ -276,6 +299,7 @@ void F4() {
 					current_data = major_upper(current_data);
 					student_record_collection[direct_object_location].setMajor(current_data);
 					show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+					cout << "The change is successfully." << endl;
 				}
 				else if (confirmation == "N" || confirmation == "n") {
 					cout << "The change is readly withdraw." << endl;
@@ -285,35 +309,47 @@ void F4() {
 				}
 				break;
 			case '3':
-				student_record_collection[direct_object_location].copySubjectInformation(previous_data_arrary);
-				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl;
-				for (int i = 0; i < 2; i++) {
-					for (int j = 0; j < 2; j++) {
-						cout << previous_data_arrary[i][j] << " ";
-					}
-					cout << endl;
-				}
+				//student_record_collection[direct_object_location].copySubjectInformation(previous_data_arrary);
+				cout << "The current subject of student" << "(" << inputed_ID << ")" << " is :" << endl << endl;
+				student_record_collection[direct_object_location].printSubject_information();
 				copy_character("-", 9, 1);
 				cout << endl;
-				cout << "Enter a new subject code or subject name to the student " << "(" << inputed_ID << "): ";
+				cout << "Which subject do you want to change" << endl;
 				cin.ignore();
-				getline(cin, current_data);
+				cout << "Just type subject code or subject name: " << endl << endl;
+				getline(cin, previous_data); // the subject name or code the user want to change
+				/*cout << "Enter a new subject code or subject name to the student " << "(" << inputed_ID << "): ";
+				cin.ignore();
+				getline(cin, current_data);*/
 
-				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+				/*if (previous_data == arrary_store subject information) {
+					// insert a part
+				}else{
+					break;
+				}*/
 
-				cin >> confirmation;
-				cout << endl;
+				// a part:
+				if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data)) {
+					cout << "Now you can change the student " << inputed_ID << " 's " << previous_data << " 's grade: " << endl;
+					cin >> current_data;
 
-				if (confirmation == "Y" || confirmation == "y") {
-					//current_data = major_upper(current_data);
-					//student_record_collection[direct_object_location].setMajor(current_data);
-					//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-				}
-				else if (confirmation == "N" || confirmation == "n") {
-					cout << "The change is readly withdraw." << endl;
-				}
-				else {
-					cout << "Invalid input!";
+					cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+					cin >> confirmation;
+					cout << endl;
+
+					if (confirmation == "Y" || confirmation == "y") {
+						current_data = name_upper(current_data);
+						student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
+						//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+						cout << "The change is successfully." << endl;
+					}
+					else if (confirmation == "N" || confirmation == "n") {
+						cout << "The change is readly withdraw." << endl;
+					}
+					else {
+						cout << "Invalid input!";
+					}
 				}
 				break;
 			case '4':
