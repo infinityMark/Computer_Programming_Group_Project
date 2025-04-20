@@ -7,6 +7,13 @@
 #include <cctype>
 using namespace std;
 
+/*
+course_information_collection is a 2D vector arrary, in each inside arrary
+the data store like below:
+{"Subject Code","Subject Name","Credit"}
+*/
+vector<vector <string>> course_information_collection = {{"ENG2042","Introduction to C++","3"}};
+
 void menu_word_output(int order, string word) {
 	// this is menu word design interface
 	cout << "[" << order << "] " << word << endl;
