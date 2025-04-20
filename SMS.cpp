@@ -14,6 +14,13 @@ the data store like below:
 */
 vector<vector <string>> course_information_collection = {{"ENG2042","Introduction to C++","3"}};
 
+/*
+grade_point_collection is a 2D vector arrary, in each inside arrary
+the data store like below:
+{"Grade","Grade Point"}
+*/
+vector<vector <string>> grade_point_collection = {{"A+","4.3"}};
+
 void menu_word_output(int order, string word) {
 	// this is menu word design interface
 	cout << "[" << order << "] " << word << endl;
