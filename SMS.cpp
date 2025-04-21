@@ -13,9 +13,7 @@ the data store like below:
 {"Subject Code","Subject Name","Credit"}
 */
 vector<vector <string>> course_information_collection = {
-	{"ENG2042","Introduction to C++","3"},
-	{"s","C++","3"},
-	{"c","C++","3"}
+	{"ENG2042","Introduction to C++","3"}
 };
 
 /*
