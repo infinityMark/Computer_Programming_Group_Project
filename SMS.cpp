@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <vector>
 #include <cmath>
+#include <cstdlib>
 #include <cctype>
 using namespace std;
 
@@ -114,12 +115,12 @@ public:
 			subject_information[i][1] = subject_i[i][1];
 		}
 	}
-	void addSubject_information(string subject_name,string subject_grade) {
+	void addSubject_information(string subject_name, string subject_grade) {
 		int lastest_number = subject_information.size();
-		subject_information.push_back({subject_name,subject_grade});
+		subject_information.push_back({ subject_name,subject_grade });
 	}
 
-	void changeSubject_information(string aim_subject,string change_subject,int code_or_grade) {
+	void changeSubject_information(string aim_subject, string change_subject, int code_or_grade) {
 		for (int i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][0] == aim_subject) {
 				subject_information[i][code_or_grade] = change_subject;
@@ -131,7 +132,7 @@ public:
 	void getData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
 	}
-	
+
 	void copySubjectInformation(vector<vector<string>>& target) {
 		target.clear();  // 清空目标数组
 		for (const auto& row : subject_information) {
@@ -153,9 +154,10 @@ public:
 			}
 		}*/
 		cout << "Code" << setw(18) << "Subject title" << setw(15) << "Grade" << setw(7) << "Credit" << endl;
-		for (int i = 0; i < subject_information.size();i++) {
-			cout << subject_information[i][0] << "  " << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][1] << setw(7) << subject_information[i][1] << setw(8)<<course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][2] << endl;
+		for (int i = 0; i < subject_information.size(); i++) {
+			cout << subject_information[i][0] << "  " << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][1] << setw(7) << subject_information[i][1] << setw(8) << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][2] << endl;
 		}
+		copy_character("_", 7, 0);
 	}
 	bool returnSubject_information_exist(string check) {
 		for (int i = 0; i < subject_information.size(); i++) {
@@ -184,6 +186,20 @@ private:
 	float GPA;		// student's gpa
 };
 vector <Student_record> student_record_collection;//this vector use to contain any object inside
+
+void showInfo() {
+	vector<vector <string>> student_info = {
+		{"Wu Jiacheng","24127656A","B07A"}
+	};
+	menu_word_output(-1, "Group Number: 7");
+	cout << endl;
+	for (int i = 0; i < student_info.size(); i++) {
+		cout << "Name      : " << student_info[i][0] << endl;
+		cout << "Student ID: " << student_info[i][1] << endl;
+		cout << "Class     : " << student_info[i][2] << endl;
+		cout << endl;
+	}
+}
 
 void F1() {
 
@@ -272,7 +288,7 @@ bool returnCourse_information_collection_exist(string check) {
 	return false;
 }
 
-void addCourse_information_collection(string code,string course_name,string credit) {
+void addCourse_information_collection(string code, string course_name, string credit) {
 	course_information_collection.push_back({code,course_name,credit});
 }
 
@@ -403,7 +419,7 @@ void F4() {
 						cout << "Invalid input!";
 					}
 				}
-				else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data)==false && returnCourse_information_collection_exist(previous_data) == true) {
+				else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == false && returnCourse_information_collection_exist(previous_data) == true) {
 					menu_word_output(-1, "The subject is going to add into the student's subject lists");
 					menu_word_output(-1, "Please input the subject's grade:");
 					cin.ignore();
@@ -487,7 +503,7 @@ int main() {
 	//temporary data
 	Student_record S243560;
 	S243560.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
-	S243560.setSubject_information({{"ENG2042","A"}}); //{"ENG2219","A"}
+	S243560.setSubject_information({ {"ENG2042","A"} }); //{"ENG2219","A"}
 	student_record_collection.push_back(S243560);
 
 
@@ -510,7 +526,7 @@ int main() {
 		cout << "\n\n";
 
 		switch (prog_choice) {
-			//case '0': showInfo(); break;
+			case '0': showInfo(); break;
 		case '1':
 			loading_data = true;
 			F1(); break;
