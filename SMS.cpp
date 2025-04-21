@@ -292,10 +292,32 @@ void addCourse_information_collection(string code, string course_name, string cr
 	course_information_collection.push_back({code,course_name,credit});
 }
 
+bool subject_code_valid_check(string code) {
+	int capital_letter = 0;
+	int number_digits = 0;
+
+	for (int i = 0; i < 7; i++) {
+		if (code[i] >= 'A' && code[i] <= 'Z') {
+			capital_letter++;
+		}
+		if (code[i] >= '0' && code[i] <= '9') {
+			number_digits++;
+		}
+	}
+
+	if (capital_letter == 3 && number_digits == 4) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 void F4() {
 	string inputed_ID = "";
 	char option;
 	bool valid_SID = false;
+	int trial_time = 0;
 	int direct_object_location;
 
 	cout << "Please input a StudentID for check: ";
@@ -330,7 +352,6 @@ void F4() {
 			cout << "\n\n";
 
 			switch (option) {
-				//case '0': showInfo(); break;
 			case '1':
 				previous_data = student_record_collection[direct_object_location].getName();
 				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
@@ -393,85 +414,104 @@ void F4() {
 				copy_character("-", 9, 1);
 				cout << endl;
 				cout << "Which subject do you want to change" << endl;
-				cin.ignore();
-				cout << "Just type subject code or subject name: " << endl << endl;
-				getline(cin, previous_data); // the subject name or code the user want to change
-
-				if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data)) {
-					cout << "Now you can change the student " << inputed_ID << " 's " << previous_data << " 's grade: " << endl;
-					cin >> current_data;
-
-					cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-
-					cin >> confirmation;
-					cout << endl;
-
-					if (confirmation == "Y" || confirmation == "y") {
-						current_data = name_upper(current_data);
-						student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
-						//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-						cout << "The change is successfully." << endl;
-					}
-					else if (confirmation == "N" || confirmation == "n") {
-						cout << "The change is readly withdraw." << endl;
-					}
-					else {
-						cout << "Invalid input!";
-					}
-				}
-				else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == false && returnCourse_information_collection_exist(previous_data) == true) {
-					menu_word_output(-1, "The subject is going to add into the student's subject lists");
-					menu_word_output(-1, "Please input the subject's grade:");
+				do {
 					cin.ignore();
-					cin >> current_data;
+					cout << "Enter subject code: " << endl << endl;
+					getline(cin, previous_data); // the subject name or code the user want to change
 
-					cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-					cin >> confirmation;
-					cout << endl;
-
-					if (confirmation == "Y" || confirmation == "y") {
-						current_data = name_upper(current_data);
-						student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
-						//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-						cout << "The change is successfully." << endl;
-					}
-					else if (confirmation == "N" || confirmation == "n") {
-						cout << "The change is readly withdraw." << endl;
+					if (subject_code_valid_check(previous_data) == true) {
+						break;
 					}
 					else {
-						cout << "Invalid input!";
+						trial_time++;
 					}
-				}
-				else {
-					string temp = "";
-					menu_word_output(-1, "The subject is going to add into the student's subject lists");
-					menu_word_output(-1, "Please input the subject's title");
-					getline(cin, current_data);
-					menu_word_output(-1, "Please input the subject's credit:");
-					getline(cin, temp);
 
-					cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-					getline(cin, confirmation);
-					cout << endl;
+					if (trial_time == 1) {
+						cout << "You still have " << (2 - trial_time) << " chance." << endl;
+					}
+				} while (trial_time < 2);
+				
+				if (subject_code_valid_check(previous_data) == true && trial_time < 3) {
+					if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data)) {
+						// 1st case
+						cout << "Now you can change the student " << inputed_ID << " 's " << previous_data << " 's grade: " << endl;
+						cin >> current_data;
 
-					if (confirmation == "Y" || confirmation == "y") {
-						current_data = major_upper(current_data);
-						addCourse_information_collection(previous_data, current_data, temp);
-						//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
+						cin >> confirmation;
+						cout << endl;
+
+						if (confirmation == "Y" || confirmation == "y") {
+							current_data = name_upper(current_data);
+							student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
+							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+							cout << "The change is successfully." << endl;
+						}
+						else if (confirmation == "N" || confirmation == "n") {
+							cout << "The change is readly withdraw." << endl;
+						}
+						else {
+							cout << "Invalid input!";
+						}
+					}
+					else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == false && returnCourse_information_collection_exist(previous_data) == true) {
+						// 2nd case
 						menu_word_output(-1, "The subject is going to add into the student's subject lists");
 						menu_word_output(-1, "Please input the subject's grade:");
-						getline(cin, current_data);
-						student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+						cin.ignore();
+						cin >> current_data;
 
-						cout << "The change is successfully." << endl;
-					}
-					else if (confirmation == "N" || confirmation == "n") {
-						cout << "The change is readly withdraw." << endl;
+						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+						cin >> confirmation;
+						cout << endl;
+
+						if (confirmation == "Y" || confirmation == "y") {
+							current_data = name_upper(current_data);
+							student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+							cout << "The change is successfully." << endl;
+						}
+						else if (confirmation == "N" || confirmation == "n") {
+							cout << "The change is readly withdraw." << endl;
+						}
+						else {
+							cout << "Invalid input!";
+						}
 					}
 					else {
-						cout << "Invalid input!";
+						// 3rd case
+						string temp = "";
+						menu_word_output(-1, "The subject is going to add into the student's subject lists");
+						menu_word_output(-1, "Please input the new subject's title");
+						getline(cin, current_data);
+						menu_word_output(-1, "Please input the new subject's credit:");
+						getline(cin, temp);
+
+						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+						getline(cin, confirmation);
+						cout << endl;
+
+						if (confirmation == "Y" || confirmation == "y") {
+							current_data = major_upper(current_data);
+							addCourse_information_collection(previous_data, current_data, temp);
+							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+
+							menu_word_output(-1, "The subject is going to add into the student's subject lists");
+							menu_word_output(-1, "Please input the subject's grade:");
+							getline(cin, current_data);
+							student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+
+							cout << "The change is successfully." << endl;
+						}
+						else if (confirmation == "N" || confirmation == "n") {
+							cout << "The change is readly withdraw." << endl;
+						}
+						else {
+							cout << "Invalid input!";
+						}
 					}
+
 				}
 				break;
 			case '4':
