@@ -567,6 +567,10 @@ void F6() {
 
 }
 
+void F7() {
+
+}
+
 int main() {
 	char prog_choice;
 	bool loading_data = false;
@@ -591,6 +595,7 @@ int main() {
 		menu_word_output(4, "Edit Students");
 		menu_word_output(5, "Generate Transcript");
 		menu_word_output(6, "Credits and Exit");
+		menu_word_output(7, "Show total number of people in different major");
 		copy_character("*", 21, 1);
 		cout << "Option (1 - 6):" << endl;
 
@@ -617,6 +622,9 @@ int main() {
 			F5(); break;
 		case '6':
 			F6(); break;
+		case '7':
+			if (loading_data == false) break;
+			F7(); break;
 		default:
 			cout << "No such function option " << prog_choice << endl;
 			break;
