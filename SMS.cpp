@@ -568,7 +568,21 @@ void F6() {
 }
 
 void F7() {
+	string sequence = "";
+	vector <string> major_ouput;
+	int sum = 0;
+	menu_word_output(-1, "Show major by letter ASC or DESC: ");
+	getline(cin, sequence);
+	
+	if (sequence == "ASC") {
 
+	}
+	else if (sequence == "DESC") {
+
+	}
+	else {
+		menu_word_output(-1, "In valid input!");
+	}
 }
 
 int main() {
@@ -597,7 +611,7 @@ int main() {
 		menu_word_output(6, "Credits and Exit");
 		menu_word_output(7, "Show total number of people in different major");
 		copy_character("*", 21, 1);
-		cout << "Option (1 - 6):" << endl;
+		cout << "Option (1 - 7):" << endl;
 
 		cout << "Enter function option number: ";
 		cin >> prog_choice;
