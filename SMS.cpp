@@ -26,6 +26,10 @@ vector<vector <string>> grade_point_collection = {
 	{"A+","4.3"}
 };
 
+vector <string> major_collection = {
+	"Information Engineering"
+};
+
 void menu_word_output(int order, string word) {
 	// this is menu word design interface
 	if (order == -1) {
@@ -129,7 +133,7 @@ public:
 		}
 	}
 
-	void getData() {
+	void printData() {
 		cout << name << "  " << S_ID << "  " << major << "  " << year << "  " << GPA;
 	}
 
@@ -157,15 +161,19 @@ public:
 		for (int i = 0; i < subject_information.size(); i++) {
 			cout << subject_information[i][0] << "  " << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][1] << setw(7) << subject_information[i][1] << setw(8) << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][2] << endl;
 		}
-		copy_character("_", 7, 0);
+		copy_character("-", 7, 0);
+		copy_character(" ", 2, 0);
 	}
-	bool returnSubject_information_exist(string check) {
+	int returnSubject_information_exist(string check) {
 		for (int i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][0] == check) {
-				return true;
+				return i;
 			}
 		}
-		return false;
+		return -1;
+	}
+	string getSubject_grade(string code) {
+		return subject_information[returnSubject_information_exist(code)][1];
 	}
 	string getS_ID() {
 		return S_ID;
@@ -185,7 +193,7 @@ private:
 	int year;		// student's year
 	float GPA;		// student's gpa
 };
-vector <Student_record> student_record_collection;//this vector use to contain any object inside
+vector <Student_record> student_record_collection;//this vector use to contain all object inside
 
 void showInfo() {
 	vector<vector <string>> student_info = {
@@ -296,20 +304,30 @@ bool subject_code_valid_check(string code) {
 	int capital_letter = 0;
 	int number_digits = 0;
 
-	for (int i = 0; i < 7; i++) {
-		if (code[i] >= 'A' && code[i] <= 'Z') {
-			capital_letter++;
-		}
-		if (code[i] >= '0' && code[i] <= '9') {
-			number_digits++;
+	if (code.length() == 7) {
+		for (int i = 0; i < 7; i++) {
+			if (code[i] >= 'A' && code[i] <= 'Z') {
+				capital_letter++;
+			}
+			if (code[i] >= '0' && code[i] <= '9') {
+				number_digits++;
+			}
 		}
 	}
-
 	if (capital_letter == 3 && number_digits == 4) {
 		return true;
 	}
 	else {
 		return false;
+	}
+}
+
+void show_all_vector_information( vector<vector <string>> element) {
+	for (int i = 0; i < element.size(); i++) {
+		for (int j = 0; j < element[i].size(); j++) {
+			cout << element[i][j] << "  ";
+		}
+		cout << endl;
 	}
 }
 
@@ -345,9 +363,12 @@ void F4() {
 			menu_word_output(2, "Edit Major");
 			menu_word_output(3, "Edit Subject List");
 			menu_word_output(4, "Return to Main Menu");
+			menu_word_output(5, "Show all subject provided");
+			menu_word_output(6, "Show the grade point");
 			copy_character("*", 29, 1);
 			cout << "Option (1-4): ";
 			cin >> option;
+			cin.ignore();
 
 			cout << "\n\n";
 
@@ -363,6 +384,7 @@ void F4() {
 
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
+				cin.ignore();
 				cin >> confirmation;
 				cout << endl << endl;
 
@@ -391,6 +413,7 @@ void F4() {
 
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
+				cin.ignore();
 				cin >> confirmation;
 				cout << endl;
 
@@ -411,56 +434,60 @@ void F4() {
 				//student_record_collection[direct_object_location].copySubjectInformation(previous_data_arrary);
 				cout << "The current subject of student" << "(" << inputed_ID << ")" << " is :" << endl << endl;
 				student_record_collection[direct_object_location].printSubject_information();
-				copy_character("-", 9, 1);
+				trial_time = 0;
 				cout << endl;
 				cout << "Which subject do you want to change" << endl;
 				do {
-					cin.ignore();
 					cout << "Enter subject code: " << endl << endl;
 					getline(cin, previous_data); // the subject name or code the user want to change
-
 					if (subject_code_valid_check(previous_data) == true) {
+						menu_word_output(-1, previous_data);
 						break;
 					}
 					else {
 						trial_time++;
 					}
+					menu_word_output(-1, previous_data);
 
-					if (trial_time == 1) {
-						cout << "You still have " << (2 - trial_time) << " chance." << endl;
-					}
-				} while (trial_time < 2);
+					cout << "You still have " << (3 - trial_time) << " chance." << endl;
+				} while (trial_time < 3);
 				
 				if (subject_code_valid_check(previous_data) == true && trial_time < 3) {
-					if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data)) {
+					if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data)!=-1) {
 						// 1st case
-						cout << "Now you can change the student " << inputed_ID << " 's " << previous_data << " 's grade: " << endl;
-						cin >> current_data;
+						cout << "Now you can change the student " << inputed_ID << "'s " << previous_data << "'s grade: " << endl;
+						getline(cin,current_data); //grade value
 
-						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-
-						cin >> confirmation;
-						cout << endl;
-
-						if (confirmation == "Y" || confirmation == "y") {
-							current_data = name_upper(current_data);
-							student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
-							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-							cout << "The change is successfully." << endl;
-						}
-						else if (confirmation == "N" || confirmation == "n") {
-							cout << "The change is readly withdraw." << endl;
+						if (student_record_collection[direct_object_location].getSubject_grade(previous_data)!="--" && current_data == "--") {
+							// can't change the grade condition
+							menu_word_output(-1, "Sorry you can't change the value, bacause the subject's code is continuous.");
 						}
 						else {
-							cout << "Invalid input!";
+							cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+							cin >> confirmation;
+							cout << endl;
+
+							if (confirmation == "Y" || confirmation == "y") {
+								current_data = name_upper(current_data);
+								student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
+								//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+								cout << "The change is successfully." << endl;
+							}
+							else if (confirmation == "N" || confirmation == "n") {
+								cout << "The change is readly withdraw." << endl;
+							}
+							else {
+								cout << "Invalid input!";
+							}
 						}
 					}
-					else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == false && returnCourse_information_collection_exist(previous_data) == true) {
+					else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == -1 && returnCourse_information_collection_exist(previous_data) == true) {
 						// 2nd case
 						menu_word_output(-1, "The subject is going to add into the student's subject lists");
 						menu_word_output(-1, "Please input the subject's grade:");
 						cin.ignore();
-						cin >> current_data;
+						getline(cin, current_data);
 
 						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 						cin >> confirmation;
@@ -498,7 +525,7 @@ void F4() {
 							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
 
 							menu_word_output(-1, "The subject is going to add into the student's subject lists");
-							menu_word_output(-1, "Please input the subject's grade:");
+							menu_word_output(-1, "Please input the subject's grade to the student:");
 							getline(cin, current_data);
 							student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
 
@@ -511,12 +538,18 @@ void F4() {
 							cout << "Invalid input!";
 						}
 					}
-
 				}
 				break;
 			case '4':
 				cout << "You are returing to the Main Menu." << endl;
 				//loading_animation();
+				break;
+			case '5':
+				show_all_vector_information(course_information_collection);
+				break;
+			case '6':
+				cout << "Grade" << "  " << "Point represent" << endl;
+				show_all_vector_information(grade_point_collection);
 				break;
 			default:
 				cout << "No such function option " << option << endl;
@@ -543,11 +576,11 @@ int main() {
 	//temporary data
 	Student_record S243560;
 	S243560.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.00);
-	S243560.setSubject_information({ {"ENG2042","A"} }); //{"ENG2219","A"}
+	S243560.setSubject_information({{"ENG2042","A+"}});
 	student_record_collection.push_back(S243560);
 
 
-	cout << "Welcome to use Student Management System" << endl;
+	menu_word_output(-1, "Welcome to use Student Management System");
 
 	do {
 		cout << "\n\n";
