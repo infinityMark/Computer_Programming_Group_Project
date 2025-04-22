@@ -569,12 +569,23 @@ void F6() {
 
 void F7() {
 	string sequence = "";
-	vector <string> major_ouput;
-	int sum = 0;
-	menu_word_output(-1, "Show major by letter ASC or DESC: ");
+	vector <vector <string>> major_ouput;
+	int sum = 0, order = 0;
+	menu_word_output(-1, "Show major by total number of attendance by ASC or DESC: ");
 	getline(cin, sequence);
+
+	for (int i = 0; i < major_collection.size(); i++) {
+		sum = 0;
+		for (int j = 0; j < student_record_collection.size(); j++) {
+			if (major_collection[i]==student_record_collection[j].getMajor()){
+				sum++;
+			}
+		}
+		major_ouput.push_back({major_collection[i],to_string(sum)});
+	}
 	
-	if (sequence == "ASC") {
+	show_all_vector_information(major_ouput);
+	/*if (sequence == "ASC") {
 
 	}
 	else if (sequence == "DESC") {
@@ -582,7 +593,7 @@ void F7() {
 	}
 	else {
 		menu_word_output(-1, "In valid input!");
-	}
+	}*/
 }
 
 int main() {
