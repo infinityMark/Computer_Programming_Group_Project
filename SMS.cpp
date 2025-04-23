@@ -217,8 +217,117 @@ void F2() {
 
 }
 
-void F3() {
+bool addStudent(const Student& student) {
+	if (students.size() >= 100) return false;
+	students.push_back(student);
+	return true;
+}
 
+bool deleteStudent(const string& id) {
+	auto it = find_if(students.begin(), students.end(), [&](const Student& s) { return s.id == id; });
+	if (it != students.end()) {
+		students.erase(it);
+		return true;
+	}
+	return false;
+}
+
+Student* findStudent(const string& id) {
+	auto it = find_if(students.begin(), students.end(), [&](const Student& s) { return s.id == id; });
+	return (it != students.end()) ? &(*it) : nullptr;
+}
+string getYesNo(const string& prompt) {
+	string input;
+	while (true) {
+		cout << prompt;
+		cin >> input;
+		if (input == "Y" || input == "y") return "Y";
+		if (input == "N" || input == "n") return "N";
+		cout << "Invalid input. Please enter Y or N.\n";
+	}
+}
+void clearCin() {
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+string generateStudentID(int cohort) {
+	stringstream ss;
+	ss << "S" << setw(2) << setfill('0') << cohort;
+	int random = rand() % 900 + 100;
+	ss << random;
+	string temp = ss.str().substr(1, 5);
+	int sum = 0;
+	for (char c : temp) sum += c - '0';
+	ss << sum % 10;
+	return ss.str();
+}
+int calculateYear(int cohort) {
+	int currentYear = 2025;
+	return currentYear - (2000 + cohort) + 1;
+}
+
+bool isValidSubjectCode(const string& code) {
+	if (code.length() != 7) return false;
+	for (int i = 0; i < 3; ++i)
+		if (!isupper(code[i])) return false;
+	for (int i = 3; i < 7; ++i)
+		if (!isdigit(code[i])) return false;
+	return true;
+}
+void handleAddDeleteStudent(SMS& sms) {
+	cout << "Enter Student ID: ";
+	string id;
+	cin >> id;
+	Student* student = sms.findStudent(id);
+	if (student) {
+		cout << "Student found:\n";
+		cout << "Name: " << student->name << "\nID: " << student->id << "\nMajor: " << student->major
+			<< "\nYear: " << student->year << "\nDelete this student? ";
+		if (getYesNo("") == "Y") {
+			sms.deleteStudent(id);
+			cout << "Student deleted.\n";
+		}
+	}
+	else {
+		cout << "Adding new student...\n";
+		string name, major;
+		int cohort, retries = 0;
+		while (retries < 3) {
+			cout << "Enter student name (surname first): ";
+			clearCin();
+			getline(cin, name);
+			name = formatName(name);
+			if (name.empty() || name.length() > 30) {
+				cout << "Invalid name. ";
+				if (++retries == 3) break;
+				continue;
+			}
+
+			cout << "Enter cohort year (e.g., 23 for 2023): ";
+			if (!(cin >> cohort) || cohort < 0 || cohort > 24) {
+				cout << "Invalid cohort (0-24). ";
+				clearCin();
+				if (++retries == 3) break;
+				continue;
+			}
+
+			cout << "Enter major: ";
+			clearCin();
+			getline(cin, major);
+			if (major.empty() || major.length() > 30) {
+				cout << "Invalid major. ";
+				if (++retries == 3) break;
+				continue;
+			}
+
+			string id = generateStudentID(cohort);
+			int year = calculateYear(cohort);
+			sms.addStudent(Student(name, id, major, year));
+			cout << "Student added. ID: " << id << "\n";
+			return;
+		}
+		cout << "Too many invalid attempts. Returning to main menu.\n";
+	}
 }
 
 void copy_object_data(vector <Student_record> student_record_collection_oringinal) {
@@ -559,9 +668,103 @@ void F4() {
 	}
 }
 
-void F5() {
 
+class Student_record {
+public:
+    
+    float calculateGPA() {
+        float totalPoints = 0, totalCredits = 0;
+        for (auto& subj : subject_information) {
+            if (subj[1] == "--") continue;
+
+            int courseIndex = returnCourse_information_collection_location(subj[0]);
+            if (courseIndex == -1) continue; 
+            float credit = stof(course_information_collection[courseIndex][2]);
+
+            for (auto& grade : grade_point_collection) {
+                if (grade[0] == subj[1]) {
+                    totalPoints += stof(grade[1]) * credit;
+                    totalCredits += credit;
+                    break;
+                }
+            }
+        }
+        return totalCredits > 0 ? totalPoints / totalCredits : 0;
+    }
+
+    int calculateAttainedCredits() {
+        int credits = 0;
+        for (auto& subj : subject_information) {
+            if (subj[1] == "--" || subj[1] == "F") continue;
+            
+            int courseIndex = returnCourse_information_collection_location(subj[0]);
+            if (courseIndex != -1) {
+                credits += stoi(course_information_collection[courseIndex][2]);
+            }
+        }
+        return credits;
+    }
+
+    void printSortedSubjects() {
+        sort(subject_information.begin(), subject_information.end(),
+            [](const vector<string>& a, const vector<string>& b) {
+                return a[0] < b[0];
+            });
+
+        cout << "Code" << setw(18) << "Subject title" << setw(15) 
+             << "Grade" << setw(7) << "Credit" << endl;
+        copy_character("-", 50, 1);
+        
+        for (auto& subj : subject_information) {
+            int courseIndex = returnCourse_information_collection_location(subj[0]);
+            if (courseIndex == -1) continue;
+            
+            cout << subj[0] << "  " 
+                 << left << setw(30) << course_information_collection[courseIndex][1]
+                 << right << setw(5) << subj[1]
+                 << setw(8) << course_information_collection[courseIndex][2] << endl;
+        }
+        copy_character("-", 50, 1);
+    }
+};
+
+void F5() {
+    string sid;
+    cout << "Enter Student ID: ";
+    cin >> sid;
+
+    auto it = find_if(student_record_collection.begin(), student_record_collection.end(),
+        [&](const Student_record& s) { return s.getS_ID() == sid; });
+
+    if (it == student_record_collection.end()) {
+        cout << "Student not found!\n";
+        return;
+    }
+
+    cout << "\nName: " << it->getName() << endl
+         << "Student ID: " << sid << endl
+         << "Major: " << it->getMajor() << endl
+         << "Year: " << it->year << endl;
+
+    it->printSortedSubjects();
+
+    int attainedCredits = it->calculateAttainedCredits();
+    float gpa = it->calculateGPA();
+
+    cout << "Credits attained: " << attainedCredits << endl;
+    if (gpa > 0) {
+        cout << fixed << setprecision(2) << "GPA: " << gpa << endl;
+    } else {
+        cout << "GPA: N/A" << endl;
+    }
 }
+
+vector<vector<string>> grade_point_collection = {
+    {"A+","4.3"}, {"A","4.0"}, {"A-","3.7"},
+    {"B+","3.3"}, {"B","3.0"}, {"B-","2.7"},
+    {"C+","2.3"}, {"C","2.0"}, {"C-","1.7"},
+    {"D+","1.3"}, {"D","1.0"}, {"F","0.0"}
+};
 
 void F6() {
 
