@@ -315,7 +315,7 @@ void F1() {
 		{"LCH1019", "Japanese I", "2", "--"}
 	};
 	chan.setSubject_information(chanSubjects);
-	//chan.calculateGPA();
+	chan.calculateGPA();
 	student_record_collection.push_back(chan);
 
 	Student_record cheung;
@@ -330,7 +330,7 @@ void F1() {
 		{"ENG2042", "Introduction to C++", "3", "--"}
 	};
 	cheung.setSubject_information(cheungSubjects);
-	//cheung.calculateGPA();
+	cheung.calculateGPA();
 	student_record_collection.push_back(cheung);
 
 	Student_record pan;
@@ -344,7 +344,7 @@ void F1() {
 		{"LCH1019", "Japanese I", "2", "C"}
 	};
 	pan.setSubject_information(panSubjects);
-	//pan.calculateGPA();
+	pan.calculateGPA();
 	student_record_collection.push_back(pan);
 
 	Student_record wong;
@@ -355,7 +355,7 @@ void F1() {
 		{"PSY2190", "Human Behavior", "3", "B+"}
 	};
 	wong.setSubject_information(wongSubjects);
-	//wong.calculateGPA();
+	wong.calculateGPA();
 	student_record_collection.push_back(wong);
 
 	cout << "Starting data loaded successfully!\n";
@@ -411,6 +411,26 @@ void F3() {
 		cout << "Enter student name (Input SURNAME Fisrt): ";
 		cin.ignore();
 		getline(cin, name);
+		for (int i = 0; i < name.length(); i++) {
+			if (surname) {
+				if (name[i] >= 'a' && name[i] <= 'z') {
+					name[i] = name[i] - 32;
+				}
+				if (name[i] = ' ') {
+					surname = false;
+					FChange = true;
+				}
+				else {
+					if (FChange) {
+						if (name[i] >= 'a' && name[i] <= 'z') {
+							name[i] = name[i] - 32;
+						}
+						FChange = false;
+					}
+				}
+			}
+		}
+
 
 
 		// Validate cohort
@@ -447,6 +467,20 @@ void F3() {
 		getline(cin, major);
 		bool Capitalize = true;
 		// Capitalize major
+		for (int i = 0; i < major.length(); i++) {
+			if (Capitalize) {
+				if (major[i] >= 'a' && major[i] <= 'z') {
+					major[i] = major[i] - 32;
+				}
+				Capitalize = false;
+			}
+			else {
+				if (major[i] >= 'a' && major[i] <= 'z') {
+					major[i] = major[i] + 32;
+				}
+				Capitalize = false;
+			}
+		}
 
 
 		// Generate Student ID using cohort_str (2 digits)
