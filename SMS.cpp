@@ -198,7 +198,7 @@ public:
 		float total = 0.0;
 		int total_credit = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
-			if (subject_information[i][1] == "---") continue;
+			if (subject_information[i][1] == "--" || subject_information[i][1] == "F") continue;
 			// 获取绩点
 			float point = 0.0;
 			for (size_t j = 0; j < grade_point_collection.size(); j++) {
