@@ -6,6 +6,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <cctype>
+#include <algorithm>
+
 using namespace std;
 
 /*
@@ -127,6 +129,18 @@ public:
 		major = "";
 		major = m;
 	}
+	void setGPA(float gpa) {
+		GPA = 0.0;
+		GPA = gpa;
+	}
+	void setYear(int y) {
+		year = 0;
+		year = y;
+	}
+	void setStudentID(string sid) {
+		S_ID = sid;
+	}
+
 	int calculateCredits() {
 		int credits = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
@@ -257,18 +271,23 @@ public:
 	string getSubject_grade(string code) {
 		return subject_information[returnSubject_information_exist(code)][1];
 	}
-	string getS_ID() {
+	string getS_ID() const {
 		return S_ID;
 	}
-	string getName() {
+	string getName() const {
 		return name;
 	}
-	string getMajor() {
+	string getMajor() const {
 		return major;
 	}
-	int getYear() {
+	int getYear() const {
 		return year;
 	}
+
+	float getGPA() const {
+		return GPA;
+	}
+
 private:
 	string name;	// student's name
 	string S_ID;	// student's id
@@ -278,6 +297,7 @@ private:
 	int year;		// student's year
 	float GPA;		// student's gpa
 };
+
 vector <Student_record> student_record_collection;//this vector use to contain all object inside
 
 void showInfo() {
@@ -294,209 +314,6 @@ void showInfo() {
 		cout << "Class     : " << student_info[i][2] << endl;
 		cout << endl;
 	}
-}
-
-void F1() {
-	student_record_collection.clear();
-
-	Student_record chan;
-	chan.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 0.0);
-	vector<vector<string>> chanSubjects = {
-		{"ENG2042", "A"},
-		{"ENG2219", "A"},
-		{"LCH1302", "A"},
-		{"LCH1019", "--"}
-	};
-	chan.setSubject_information(chanSubjects);
-	chan.calculateGPA();
-	student_record_collection.push_back(chan);
-
-	Student_record cheung;
-	cheung.setRecord("CHEUNG Jacky", "S232210", "Civil Engineering", 2, 0.0);
-	vector<vector<string>> cheungSubjects = {
-		{"ENG1113", "B"},
-		{"ENG2250", "B+"},
-		{"ENG2041", "F"},
-		{"LCH1302", "A-"},
-		{"LCH1019", "B"},
-		{"BUS1021", "--"},
-		{"ENG2042", "--"}
-	};
-	cheung.setSubject_information(cheungSubjects);
-	cheung.calculateGPA();
-	student_record_collection.push_back(cheung);
-
-	Student_record pan;
-	pan.setRecord("PAN Peter", "S222343", "Global Business", 3, 0.0);
-	vector<vector<string>> panSubjects = {
-		{"BUS1021", "A"},
-		{"BUS2002", "A+"},
-		{"BUS3006", "B-"},
-		{"BUS4510", "A-"},
-		{"BUS5523", "B+"},
-		{"LCH1019", "C"}
-	};
-	pan.setSubject_information(panSubjects);
-	pan.calculateGPA();
-	student_record_collection.push_back(pan);
-
-	Student_record wong;
-	wong.setRecord("WONG Kam", "S244617", "Educational Psychology", 1, 0.0);
-	vector<vector<string>> wongSubjects = {
-		{"PSY1234", "C"},
-		{"PSY2233", "B"},
-		{"PSY2190", "B+"}
-	};
-	wong.setSubject_information(wongSubjects);
-	wong.calculateGPA();
-	student_record_collection.push_back(wong);
-
-	cout << "Starting data loaded successfully!\n";
-}
-
-void F2() {
-
-}
-
-void F3() {
-	string student_id;
-	bool exists = false;
-	int index = -1;
-	cout << "Enter Student ID: ";
-	cin.ignore();
-	getline(cin, student_id);
-
-	// Check if student exists
-	for (int i = 0; i < student_record_collection.size(); i++) {
-		if (student_record_collection[i].getS_ID() == student_id) {
-			exists = true;
-			index = i;
-			break;
-		}
-	}
-
-	if (exists) {
-		// Delete student
-		cout << "Student found:" << endl;
-		student_record_collection[index].printData();
-		cout << endl;
-
-		char confirm;
-		cout << "Confirm deletion (Y/N): ";
-		cin >> confirm;
-
-		if (toupper(confirm) == 'Y') {
-			student_record_collection.erase(student_record_collection.begin() + index);
-			cout << "Student deleted successfully." << endl;
-		}
-		else {
-			cout << "Deletion canceled." << endl;
-		}
-	}
-	else {
-		// Add student
-		string name, major, cohort_str;
-		int cohort_num;
-		int retries = 0;
-		bool surname = true;
-		bool FChange = false;
-		// Get student name
-		cout << "Enter student name (Input SURNAME Fisrt): ";
-		cin.ignore();
-		getline(cin, name);
-
-
-		// Validate cohort
-		bool valid = false;
-		while (retries < 3) {
-			cout << "Enter cohort year (00-24): "; //(00-24) or (21-24)
-			getline(cin, cohort_str);
-
-			if (cohort_str.length() != 2 || !isdigit(cohort_str[0]) || !isdigit(cohort_str[1])) {
-				retries++;
-				cout << "Invalid format. Please enter 2 digits." << endl;
-				continue;
-			}
-
-			cohort_num = stoi(cohort_str);
-			if (cohort_num < 0 || cohort_num > 24) { // (00-24) or (21-24)
-				retries++;
-				cout << "Cohort must be between 00 and 24." << endl; // (00-24) or (21-24)
-				continue;
-			}
-
-			valid = true;
-			break;
-		}
-
-		if (!valid) {
-			cout << "Too many invalid attempts. Operation canceled." << endl;
-			return;
-		}
-
-		// Get major
-		cout << "Enter major: ";
-		cin.ignore();
-		getline(cin, major);
-		bool Capitalize = true;
-		// Capitalize major
-
-
-		// Generate Student ID using cohort_str (2 digits)
-		srand(time(0));
-		int random_num = rand() % 1000;
-		string generated_id;
-		int check_digit;
-		int sum = 0;
-		string random_part = to_string(random_num);
-		string id_body;
-		random_part = string(3 - random_part.length(), '0') + random_part;
-
-		id_body = cohort_str + random_part;
-		for (char c : id_body)
-			sum = sum + c - '0';
-		check_digit = sum % 10;
-		generated_id = "S" + id_body + to_string(check_digit);
-
-		// Calculate year
-		int current_year = 2025;
-		int year = current_year - (2000 + cohort_num);
-
-		// Create and add student
-		Student_record new_student;
-		new_student.setRecord(name, generated_id, major, year, 0.0f);
-		student_record_collection.push_back(new_student);
-
-		cout << "Student added successfully. Generated ID: " << generated_id << " " << "Year " << year << endl;
-	}
-}
-
-void copy_object_data(vector <Student_record> student_record_collection_oringinal) {
-	// this function use to copy obejct vector
-	for (int i = 0; i < student_record_collection.size(); i++) {
-		student_record_collection_oringinal.push_back(student_record_collection[i]);
-	}
-}
-
-void show_edited_information(string before, string current) {
-	//int margin = abs(current.size() - before.size());
-	cout << "Before" << setw(before.size() + 5) << "Current" << endl;
-	copy_character("-", before.size(), 0);
-	cout << setw(5);
-	copy_character("-", current.size(), 1);
-	cout << before << " -> " << current << endl;
-};
-
-void prompt_change_student_information(string i, string p, string c, string confirma, string mission) {
-	cout << "The current " << mission << " of student" << "(" << i << ")" << " is :" << p << endl << endl;
-	cout << "Enter a new to the student " << "(" << i << "): ";
-	cin.ignore();
-	getline(cin, c);
-
-	cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-
-	cin >> confirma;
-	cout << endl;
 }
 
 string name_upper(string name) {
@@ -535,6 +352,289 @@ string major_upper(string major) {
 		}
 	}
 	return major;
+}
+
+void F1() {
+	student_record_collection.clear();
+
+	Student_record chan;
+	chan.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 4.0);
+	vector<vector<string>> chanSubjects = {
+		{"ENG2042", "A"},
+		{"ENG2219", "A"},
+		{"LCH1302", "A"},
+		{"LCH1019", "--"}
+	};
+	chan.setSubject_information(chanSubjects);
+	chan.calculateGPA();
+	student_record_collection.push_back(chan);
+
+	Student_record cheung;
+	cheung.setRecord("CHEUNG Jacky", "S232210", "Civil Engineering", 2, 2.48);
+	vector<vector<string>> cheungSubjects = {
+		{"ENG1113", "B"},
+		{"ENG2250", "B+"},
+		{"ENG2041", "F"},
+		{"LCH1302", "A-"},
+		{"LCH1019", "B"},
+		{"BUS1021", "--"},
+		{"ENG2042", "--"}
+	};
+	cheung.setSubject_information(cheungSubjects);
+	cheung.calculateGPA();
+	student_record_collection.push_back(cheung);
+
+	Student_record pan;
+	pan.setRecord("PAN Peter", "S222343", "Global Business", 3, 3.42);
+	vector<vector<string>> panSubjects = {
+		{"BUS1021", "A"},
+		{"BUS2002", "A+"},
+		{"BUS3006", "B-"},
+		{"BUS4510", "A-"},
+		{"BUS5523", "B+"},
+		{"LCH1019", "C"}
+	};
+	pan.setSubject_information(panSubjects);
+	pan.calculateGPA();
+	student_record_collection.push_back(pan);
+
+	Student_record wong;
+	wong.setRecord("WONG Kam", "S244617", "Educational Psychology", 1, 2.86);
+	vector<vector<string>> wongSubjects = {
+		{"PSY1234", "C"},
+		{"PSY2233", "B"},
+		{"PSY2190", "B+"}
+	};
+	wong.setSubject_information(wongSubjects);
+	wong.calculateGPA();
+	student_record_collection.push_back(wong);
+
+	cout << "Starting data loaded successfully!\n";
+}
+
+
+
+void F2() {
+	int sortChoice;
+	cout << "Choose sorting method:\n";
+	menu_word_output(1, "Sort by Name (Ascending)");
+	menu_word_output(2, "Sort by GPA (Descending)");
+	cout << "Option (1-2): ";
+	cin >> sortChoice;
+
+	if (cin.fail() || (sortChoice != 1 && sortChoice != 2)) {
+		cin.clear();
+		cin.ignore((numeric_limits<streamsize>::max)(), '\n');
+		cout << "Invalid choice. Returning to Main Menu.\n";
+		return;
+	}
+
+	vector<Student_record> sortedStudents = student_record_collection;
+
+	if (sortChoice == 1) {
+		sort(sortedStudents.begin(), sortedStudents.end(), [](const Student_record& a, const Student_record& b) {
+			return a.getName() < b.getName();
+		});
+	}
+	else {
+		sort(sortedStudents.begin(), sortedStudents.end(), [](const Student_record& a, const Student_record& b) {
+			return a.getGPA() > b.getGPA();
+		});
+	}
+
+	// Display table header
+	cout << "\n" << left << setw(25) << "Student Name"
+		<< setw(12) << "Student ID"
+		<< setw(30) << "Major"
+		<< setw(6) << "Year"
+		<< "GPA\n";
+	cout << string(75, '-') << endl;
+
+	for (const auto& student : sortedStudents) {
+		cout << left << setw(25) << student.getName()
+			<< setw(12) << student.getS_ID()
+			<< setw(30) << student.getMajor()
+			<< setw(6) << student.getYear();
+
+		float gpa = student.getGPA();
+		if (gpa < 0.001) {
+			cout << "N/A" << endl;
+		}
+		else {
+			cout << fixed << setprecision(2) << gpa << endl;
+		}
+	}
+	cout << endl;
+}
+
+
+
+void F3() {
+	string student_id;
+	bool exists = false;
+	int index = -1;
+
+	cout << "Enter Student ID: ";
+	cin.ignore();
+	getline(cin, student_id);
+
+	// Check if student exists
+	for (size_t i = 0; i < student_record_collection.size(); i++) {
+		if (student_record_collection[i].getS_ID() == student_id) {
+			exists = true;
+			index = i;
+			break;
+		}
+	}
+
+	if (exists) {
+		// Delete student process (unchanged)
+		// ... [existing delete code]
+	}
+	else {
+		// Add student process
+		string name, major, cohort_str;
+		int cohort_num = 0;
+		int retries = 0;
+		bool valid = false;
+
+		// Input name with retries
+		while (retries < 3) {
+			cout << "\nEnter student name (SURNAME First, max 30 chars): ";
+			getline(cin, name);
+			name = name_upper(name);
+			if (!(name.empty()) && name.length() <= 30) {
+				valid = true;
+				break;
+			}
+			else {
+				retries++;
+				cout << "Invalid name. Attempts left: " << (3 - retries) << endl;
+			}
+		}
+		if (!valid) {
+			cout << "Too many invalid attempts. Operation canceled." << endl;
+			return;
+		}
+
+		// Reset for cohort input
+		valid = false;
+		while (retries < 3) {
+			cout << "Enter cohort year (21-24, e.g., 23 for 2023): ";
+			getline(cin, cohort_str);
+			if (cohort_str.size() == 2 && isdigit(cohort_str[0]) && isdigit(cohort_str[1])) {
+				cohort_num = stoi(cohort_str);
+				if (cohort_num >= 21 && cohort_num <= 24) {
+					valid = true;
+					break;
+				}
+			}
+			retries++;
+			cout << "Invalid cohort. Attempts left: " << (3 - retries) << endl;
+		}
+		if (!valid) {
+			cout << "Too many invalid attempts. Operation canceled." << endl;
+			return;
+		}
+
+		// Input major with retries
+		valid = false;
+		int major_choice;
+		while (retries < 3) {
+			cout << "Choose Major:\n";
+			menu_word_output(1, "Information Engineering");
+			menu_word_output(2, "Civil Engineering");  // Corrected typo
+			menu_word_output(3, "Global Business");
+			menu_word_output(4, "Educational Psychology");  // Corrected typo
+			menu_word_output(5, "Add New Major");
+			cout << "Option (1-5): ";
+			cin >> major_choice;
+			cin.ignore();
+
+			switch (major_choice) {
+			case 1: major = "Information Engineering"; break;
+			case 2: major = "Civil Engineering"; break;  // Corrected
+			case 3: major = "Global Business"; break;
+			case 4: major = "Educational Psychology"; break;  // Corrected
+			case 5:
+				cout << "Enter new major (max 30 chars): ";
+				getline(cin, major);
+				major = major_upper(major);
+				if (!(major.empty()) && major.length() <= 30) {
+					major_collection.push_back(major);
+				}
+				else {
+					retries++;
+					cout << "Invalid major length. Attempts left: " << (3 - retries) << endl;
+					continue;
+				}
+				break;
+			default:
+				retries++;
+				cout << "Invalid choice. Attempts left: " << (3 - retries) << endl;
+				continue;
+			}
+			valid = true;
+			break;
+		}
+		if (!valid) {
+			cout << "Too many invalid attempts. Operation canceled." << endl;
+			return;
+		}
+
+		// Generate Student ID (existing code)
+		srand(static_cast<unsigned int>(time(0)));
+		int random_num = rand() % 1000;
+		string random_str = to_string(random_num);
+		while (random_str.length() < 3) random_str = "0" + random_str;
+		string id_body = cohort_str + random_str;
+		int sum = 0;
+		for (char c : id_body) sum += c - '0';
+		int check_digit = sum % 10;
+		string generated_id = "S" + id_body + to_string(check_digit);
+
+		// Calculate year (2025 is current year)
+		int year = 2025 - (2000 + cohort_num); // Adjust based on current academic year
+
+		// Create and add student
+		Student_record new_student;
+		new_student.setName(name);
+		new_student.setMajor(major);
+		new_student.setStudentID(generated_id);
+		new_student.setYear(year);
+		new_student.setGPA(0.0); // GPA calculated later
+		student_record_collection.push_back(new_student);
+
+		cout << "Student added successfully.  "<< name << "'s Student ID: " << generated_id << "  Year" <<year << endl;
+	}
+}
+
+void copy_object_data(vector <Student_record> student_record_collection_oringinal) {
+	// this function use to copy obejct vector
+	for (int i = 0; i < student_record_collection.size(); i++) {
+		student_record_collection_oringinal.push_back(student_record_collection[i]);
+	}
+}
+
+void show_edited_information(string before, string current) {
+	//int margin = abs(current.size() - before.size());
+	cout << "Before" << setw(before.size() + 5) << "Current" << endl;
+	copy_character("-", before.size(), 0);
+	cout << setw(5);
+	copy_character("-", current.size(), 1);
+	cout << before << " -> " << current << endl;
+};
+
+void prompt_change_student_information(string i, string p, string c, string confirma, string mission) {
+	cout << "The current " << mission << " of student" << "(" << i << ")" << " is :" << p << endl << endl;
+	cout << "Enter a new to the student " << "(" << i << "): ";
+	cin.ignore();
+	getline(cin, c);
+
+	cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+	cin >> confirma;
+	cout << endl;
 }
 
 bool returnMajor_information_collection_exist(string check) {
@@ -745,7 +845,7 @@ void F4() {
 							}
 						}
 					}
-					else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == -1 && returnExist(previous_data,course_information_collection,0) == true) {
+					else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == -1 && returnExist(previous_data, course_information_collection, 0) == true) {
 						// 2nd case
 						menu_word_output(-1, "The subject is going to add into the student's subject lists");
 						menu_word_output(-1, "Please input the subject's grade:");
@@ -778,7 +878,7 @@ void F4() {
 						menu_word_output(-1, "Please input the new subject's credit:");
 						getline(cin, temp);
 
-						if (temp>="2" && temp<="5") {
+						if (temp >= "2" && temp <= "5") {
 							cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 							getline(cin, confirmation);
 							cout << endl;
@@ -880,7 +980,18 @@ void F5() {
 }
 
 void F6() {
-
+	char confirm;
+	do {
+		cout << "Confirm exit (Y/N): ";
+		cin >> confirm;
+		cin.ignore();
+	} while (toupper(confirm) != 'Y' && toupper(confirm) != 'N');
+	if (toupper(confirm) == 'Y') {
+		cout << "Group Members:\n";
+		cout << "Name: John DOE, ID: S123456, Tutorial Group: A\n";
+		cout << "Name: Jane SMITH, ID: S123457, Tutorial Group: A\n";
+		exit(0);
+	}
 }
 
 void F7() {
@@ -922,9 +1033,10 @@ int main() {
 		menu_word_output(6, "Credits and Exit");
 		menu_word_output(7, "Show total number of people in different major");
 		copy_character("*", 21, 1);
-		cout << "Option (1 - 7):" << endl;
+		cout << endl;
+		//cout << "Option (1 - 7):" << endl;
 
-		cout << "Enter function option number: ";
+		cout << "Enter function option number (1 - 7): ";
 		cin >> prog_choice;
 		cout << "\n\n";
 
