@@ -6,6 +6,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <cctype>
+#include <limits>
+#include <locale>
 using namespace std;
 
 /*
@@ -39,11 +41,17 @@ the data store like below:
 {"Grade","Grade Point"}
 */
 vector<vector <string>> grade_point_collection = {
-	{"A+","4.3"}
+	{"A+","4.3"}, {"A","4.0"}, {"A-","3.7"},
+	{"B+","3.3"}, {"B","3.0"}, {"B-","2.7"},
+	{"C+","2.3"}, {"C","2.0"}, {"C-","1.7"},
+	{"D+","1.3"}, {"D","1.0"}, {"F","0.0"}
 };
 
 vector <string> major_collection = {
-	"Information Engineering"
+	"Information Engineering",
+	"Civil Engineering",
+	"Global Business",
+	"Educational Psychology"
 };
 
 void menu_word_output(int order, string word) {
@@ -391,26 +399,6 @@ void F3() {
 		cout << "Enter student name (Input SURNAME Fisrt): ";
 		cin.ignore();
 		getline(cin, name);
-		for (int i = 0; i < name.length(); i++) {
-			if (surname) {
-				if (name[i] >= 'a' && name[i] <= 'z') {
-					name[i] = name[i] - 32;
-				}
-				if (name[i] = ' ') {
-					surname = false;
-					FChange = true;
-				}
-				else {
-					if (FChange) {
-						if (name[i] >= 'a' && name[i] <= 'z') {
-							name[i] = name[i] - 32;
-						}
-						FChange = false;
-					}
-				}
-			}
-		}
-
 
 
 		// Validate cohort
@@ -447,20 +435,6 @@ void F3() {
 		getline(cin, major);
 		bool Capitalize = true;
 		// Capitalize major
-		for (int i = 0; i < major.length(); i++) {
-			if (Capitalize) {
-				if (major[i] >= 'a' && major[i] <= 'z') {
-					major[i] = major[i] - 32;
-				}
-				Capitalize = false;
-			}
-			else {
-				if (major[i] >= 'a' && major[i] <= 'z') {
-					major[i] = major[i] + 32;
-				}
-				Capitalize = false;
-			}
-		}
 
 
 		// Generate Student ID using cohort_str (2 digits)
@@ -505,7 +479,7 @@ void show_edited_information(string before, string current) {
 	copy_character("-", before.size(), 0);
 	cout << setw(5);
 	copy_character("-", current.size(), 1);
-	cout << before << " -> " << current;
+	cout << before << " -> " << current << endl;
 };
 
 void prompt_change_student_information(string i, string p, string c, string confirma, string mission) {
@@ -545,11 +519,11 @@ string name_upper(string name) {
 }
 
 string major_upper(string major) {
-	major[0] = major[0] - 'a' + 'A';
+	major[0] = toupper(major[0]);
 
 	for (int i = 1; i < major.size(); i++) {
 		if (major[i - 1] == ' ') {
-			major[i] = major[i] - 'a' + 'A';
+			major[i] = toupper(major[i]);
 		}
 		if (major[i] >= 'A' && major[i] <= 'Z' && major[i - 1] != ' ') {
 			major[i] = tolower(major[i]);
@@ -561,6 +535,15 @@ string major_upper(string major) {
 bool returnCourse_information_collection_exist(string check) {
 	for (int i = 0; i < course_information_collection.size(); i++) {
 		if (course_information_collection[i][0] == check) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool returnMajor_information_collection_exist(string check) {
+	for (int i = 0; i < major_collection.size(); i++) {
+		if (major_collection[i] == check) {
 			return true;
 		}
 	}
@@ -686,9 +669,14 @@ void F4() {
 
 				if (confirmation == "Y" || confirmation == "y") {
 					current_data = major_upper(current_data);
-					student_record_collection[direct_object_location].setMajor(current_data);
-					show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-					cout << "The change is successfully." << endl;
+					if (returnMajor_information_collection_exist(current_data)) {
+						student_record_collection[direct_object_location].setMajor(current_data);
+						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+						cout << "The change is successfully." << endl;
+					}
+					else {
+						menu_word_output(-1, "No such Major!");
+					}
 				}
 				else if (confirmation == "N" || confirmation == "n") {
 					cout << "The change is readly withdraw." << endl;
@@ -823,10 +811,12 @@ void F4() {
 			}
 		} while (option != '4');
 	}
+	else {
+		menu_word_output(-1, "No such student ID");
+	}
 }
 
 void F5() {
-
 	string sid;
 	cout << "Enter Student ID: ";
 	cin >> sid;
