@@ -31,7 +31,6 @@ vector<vector <string>> course_information_collection = {
 	{"PSY1234", "Introduction to Psychology", "2"},
 	{"PSY2233", "Sociology", "3"},
 	{"PSY2190", "Human Behavior", "3"}
-	
 };
 
 /*
@@ -234,25 +233,6 @@ public:
 			}
 		}
 	}
-	void printSubject_information() {
-		/*int largest_width;
-		for (int i = 0; i <= subject_information.size(); i++) {
-			if (i == 0) {
-				largest_width = subject_information[0][1].length();
-			}
-			else {
-				if (subject_information[i][1].length() > largest_width) {
-					largest_width = subject_information[0][1].length();
-				}
-			}
-		}*/
-		cout << "Code" << setw(18) << "Subject title" << setw(15) << "Grade" << setw(7) << "Credit" << endl;
-		for (int i = 0; i < subject_information.size(); i++) {
-			cout << subject_information[i][0] << "  " << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][1] << setw(7) << subject_information[i][1] << setw(8) << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][2] << endl;
-		}
-		copy_character("-", 7, 0);
-		copy_character(" ", 2, 0);
-	}
 	int returnSubject_information_exist(string check) {
 		for (int i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][0] == check) {
@@ -315,7 +295,7 @@ void F1() {
 		{"LCH1019", "Japanese I", "2", "--"}
 	};
 	chan.setSubject_information(chanSubjects);
-	//chan.calculateGPA();
+	chan.calculateGPA();
 	student_record_collection.push_back(chan);
 
 	Student_record cheung;
@@ -330,7 +310,7 @@ void F1() {
 		{"ENG2042", "Introduction to C++", "3", "--"}
 	};
 	cheung.setSubject_information(cheungSubjects);
-	//cheung.calculateGPA();
+	cheung.calculateGPA();
 	student_record_collection.push_back(cheung);
 
 	Student_record pan;
@@ -344,7 +324,7 @@ void F1() {
 		{"LCH1019", "Japanese I", "2", "C"}
 	};
 	pan.setSubject_information(panSubjects);
-	//pan.calculateGPA();
+	pan.calculateGPA();
 	student_record_collection.push_back(pan);
 
 	Student_record wong;
@@ -355,7 +335,7 @@ void F1() {
 		{"PSY2190", "Human Behavior", "3", "B+"}
 	};
 	wong.setSubject_information(wongSubjects);
-	//wong.calculateGPA();
+	wong.calculateGPA();
 	student_record_collection.push_back(wong);
 
 	cout << "Starting data loaded successfully!\n";
@@ -487,7 +467,7 @@ void copy_object_data(vector <Student_record> student_record_collection_oringina
 
 void show_edited_information(string before, string current) {
 	//int margin = abs(current.size() - before.size());
-	cout << "Before" << setw(fabs(before.size() - 6) + 4 + 7) << "Current" << endl;
+	cout << "Before" << setw(before.size()+5) << "Current" << endl;
 	copy_character("-", before.size(), 0);
 	cout << setw(5);
 	copy_character("-", current.size(), 1);
@@ -603,7 +583,7 @@ void F4() {
 	for (int i = 0; i < student_record_collection.size(); i++) {
 		if (inputed_ID == student_record_collection[i].getS_ID()) {
 			valid_SID = true;
-			direct_object_location = 0;
+			direct_object_location = i;
 		}
 	}
 	if (valid_SID == true) {
@@ -636,12 +616,10 @@ void F4() {
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
 				cout << "Enter a new name to the student " << "(" << inputed_ID << "): ";
-				cin.ignore();
 				getline(cin, current_data);
 
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
-				cin.ignore();
 				cin >> confirmation;
 				cout << endl << endl;
 
@@ -665,12 +643,10 @@ void F4() {
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
 				cout << "Enter a new major to the student " << "(" << inputed_ID << "): ";
-				cin.ignore();
 				getline(cin, current_data);
 
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
-				cin.ignore();
 				cin >> confirmation;
 				cout << endl;
 
@@ -688,9 +664,8 @@ void F4() {
 				}
 				break;
 			case '3':
-				//student_record_collection[direct_object_location].copySubjectInformation(previous_data_arrary);
 				cout << "The current subject of student" << "(" << inputed_ID << ")" << " is :" << endl << endl;
-				student_record_collection[direct_object_location].printSubject_information();
+				student_record_collection[direct_object_location].printSortedSubjects();
 				trial_time = 0;
 				cout << endl;
 				cout << "Which subject do you want to change" << endl;
@@ -889,7 +864,7 @@ int main() {
 	char prog_choice;
 	bool loading_data = false;
 
-	loading_animation();
+	//loading_animation();
 
 	menu_word_output(-1, "Welcome to use Student Management System");
 
