@@ -146,34 +146,41 @@ public:
 	}
 	void printSortedSubjects() {
 		// 冒泡排序按科目代码排序
-		for (size_t i = 0; i < subject_information.size() - 1; i++) {
-			for (size_t j = 0; j < subject_information.size() - i - 1; j++) {
-				if (subject_information[j][0] > subject_information[j + 1][0]) {
-					swap(subject_information[j], subject_information[j + 1]);
+		if (subject_information.size() <= 0) {
+			cout << "Code  Subject Title                 Grade  Credit\n";
+			cout << "------------------------------------------------\n";
+			menu_word_output(-1, "No any subject");
+		}
+		else {
+			for (size_t i = 0; i < subject_information.size() - 1; i++) {
+				for (size_t j = 0; j < subject_information.size() - i - 1; j++) {
+					if (subject_information[j][0] > subject_information[j + 1][0]) {
+						swap(subject_information[j], subject_information[j + 1]);
+					}
 				}
 			}
-		}
-		cout << "Code  Subject Title                 Grade  Credit\n";
-		cout << "------------------------------------------------\n";
-		for (size_t i = 0; i < subject_information.size(); i++) {
-			string code = subject_information[i][0];
-			string grade = subject_information[i][1];
-			string title = "";
-			string credit = "";
-			// 查找课程信息
-			for (size_t j = 0; j < course_information_collection.size(); j++) {
-				if (course_information_collection[j][0] == code) {
-					title = course_information_collection[j][1];
-					credit = course_information_collection[j][2];
-					break;
+			cout << "Code  Subject Title                 Grade  Credit\n";
+			cout << "------------------------------------------------\n";
+			for (size_t i = 0; i < subject_information.size(); i++) {
+				string code = subject_information[i][0];
+				string grade = subject_information[i][1];
+				string title = "";
+				string credit = "";
+				// 查找课程信息
+				for (size_t j = 0; j < course_information_collection.size(); j++) {
+					if (course_information_collection[j][0] == code) {
+						title = course_information_collection[j][1];
+						credit = course_information_collection[j][2];
+						break;
+					}
 				}
+				cout << left << setw(8) << code
+					<< " " << setw(40) << title
+					<< " " << setw(5) << grade
+					<< " " << credit << endl;
 			}
-			cout << left << setw(8) << code
-				<< " " << setw(40) << title
-				<< " " << setw(5) << grade
-				<< " " << credit << endl;
+			cout << "------------------------------------------------\n";
 		}
-		cout << "------------------------------------------------\n";
 	}
 	float calculateGPA() {
 		float total = 0.0;
