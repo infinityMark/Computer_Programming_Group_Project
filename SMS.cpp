@@ -6,8 +6,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <cctype>
-#include <limits>
-#include <locale>
 using namespace std;
 
 /*
@@ -216,7 +214,7 @@ public:
 				continue; // 或者抛出异常
 			}
 			if (i >= subject_information.size()) {
-				subject_information.push_back(vector<string>(2)); // 假设每行 2 列
+				subject_information.push_back(vector<string>(2)); // Assume 2 columns per row
 			}
 			subject_information[i][0] = subject_i[i][0];
 			subject_information[i][1] = subject_i[i][1];
@@ -241,10 +239,10 @@ public:
 	}
 
 	void copySubjectInformation(vector<vector<string>>& target) {
-		target.clear();  // 清空目标数组
+		target.clear();  // 清空目标数组 clean aim target
 		for (const auto& row : subject_information) {
 			if (row.size() >= 2) {
-				target.push_back({ row[0], row[1] });  // 复制前两列
+				target.push_back({ row[0], row[1] });  // Copy the first two columns
 			}
 		}
 	}
