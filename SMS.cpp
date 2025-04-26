@@ -239,7 +239,7 @@ public:
 	}
 
 	void copySubjectInformation(vector<vector<string>>& target) {
-		target.clear();  // 清空目标数组 clean aim target
+		target.clear();  // clean aim target
 		for (const auto& row : subject_information) {
 			if (row.size() >= 2) {
 				target.push_back({ row[0], row[1] });  // Copy the first two columns
