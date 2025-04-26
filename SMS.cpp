@@ -130,7 +130,7 @@ public:
 	int calculateCredits() {
 		int credits = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
-			if (subject_information[i][1] == "---" || subject_information[i][1] == "F")
+			if (subject_information[i][1] == "--" || subject_information[i][1] == "F")
 				continue;
 			// 查找课程学分
 			for (size_t j = 0; j < course_information_collection.size(); j++) {
