@@ -391,6 +391,26 @@ void F3() {
 		cout << "Enter student name (Input SURNAME Fisrt): ";
 		cin.ignore();
 		getline(cin, name);
+		for (int i = 0; i < name.length(); i++) {
+			if (surname) {
+				if (name[i] >= 'a' && name[i] <= 'z') {
+					name[i] = name[i] - 32;
+				}
+				if (name[i] = ' ') {
+					surname = false;
+					FChange = true;
+				}
+				else {
+					if (FChange) {
+						if (name[i] >= 'a' && name[i] <= 'z') {
+							name[i] = name[i] - 32;
+						}
+						FChange = false;
+					}
+				}
+			}
+		}
+
 
 
 		// Validate cohort
@@ -427,6 +447,20 @@ void F3() {
 		getline(cin, major);
 		bool Capitalize = true;
 		// Capitalize major
+		for (int i = 0; i < major.length(); i++) {
+			if (Capitalize) {
+				if (major[i] >= 'a' && major[i] <= 'z') {
+					major[i] = major[i] - 32;
+				}
+				Capitalize = false;
+			}
+			else {
+				if (major[i] >= 'a' && major[i] <= 'z') {
+					major[i] = major[i] + 32;
+				}
+				Capitalize = false;
+			}
+		}
 
 
 		// Generate Student ID using cohort_str (2 digits)
