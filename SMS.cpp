@@ -159,8 +159,8 @@ public:
 	void printSortedSubjects() {
 		// 冒泡排序按科目代码排序
 		if (subject_information.size() <= 0) {
-			cout << "Code  Subject Title                 Grade  Credit\n";
-			cout << "------------------------------------------------\n";
+			cout << "Code     Subject Title                          Grade  Credit\n";
+			cout << "-------------------------------------------------------------\n";
 			menu_word_output(-1, "No any subject");
 		}
 		else {
@@ -171,8 +171,8 @@ public:
 					}
 				}
 			}
-			cout << "Code  Subject Title                 Grade  Credit\n";
-			cout << "------------------------------------------------\n";
+			cout << "Code     Subject Title                          Grade  Credit\n";
+			cout << "-------------------------------------------------------------\n";
 			for (size_t i = 0; i < subject_information.size(); i++) {
 				string code = subject_information[i][0];
 				string grade = subject_information[i][1];
@@ -191,7 +191,7 @@ public:
 					<< " " << setw(5) << grade
 					<< " " << credit << endl;
 			}
-			cout << "------------------------------------------------\n";
+			cout << "-------------------------------------------------------------\n";
 		}
 	}
 	float calculateGPA() {
