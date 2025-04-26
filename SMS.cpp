@@ -209,9 +209,9 @@ public:
 	void setSubject_information(const vector<vector<string>>& subject_i) {
 		// this is use to set value in the beginning
 		for (int i = 0; i < subject_i.size(); i++) {
-			// 确保 subject_i[i] 至少有 2 个元素
+			// Ensure that subject_i[i] has at least 2 elements
 			if (subject_i[i].size() < 2) {
-				continue; // 或者抛出异常
+				continue; // Or throw an exception
 			}
 			if (i >= subject_information.size()) {
 				subject_information.push_back(vector<string>(2)); // Assume 2 columns per row
