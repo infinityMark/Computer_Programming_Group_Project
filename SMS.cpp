@@ -14,7 +14,24 @@ the data store like below:
 {"Subject Code","Subject Name","Credit"}
 */
 vector<vector <string>> course_information_collection = {
-	{"ENG2042","Introduction to C++","3"}
+	{"ENG2042","Introduction to C++","3"},
+	{"ENG2219", "Signal Processing", "3"},
+	{"LCH1302", "Professional English Writing", "2"},
+	{"LCH1019", "Japanese I", "2"},
+	{"ENG1113", "Structural Fundamental", "3"},
+	{"ENG2250", "Engineering Mathematics", "3"},
+	{"ENG2041", "Applied Computing", "3"},
+	{"BUS1021", "Personal Financial Planning", "3"},
+	{"BUS1021", "Personal Financial Planning", "3"},
+	{"BUS2002", "Introduction to Economics", "3"},
+	{"BUS3006", "Understanding Globalization", "3"},
+	{"BUS4510", "Business Project Management 4", "3"},
+	{"BUS5523", "Final Year Project", "5"},
+	{"LCH1019", "Japanese I", "2"},
+	{"PSY1234", "Introduction to Psychology", "2"},
+	{"PSY2233", "Sociology", "3"},
+	{"PSY2190", "Human Behavior", "3"}
+	
 };
 
 /*
@@ -22,11 +39,8 @@ grade_point_collection is a 2D vector arrary, in each inside arrary
 the data store like below:
 {"Grade","Grade Point"}
 */
-vector<vector<string>> grade_point_collection = {
-	{"A+","4.3"}, {"A","4.0"}, {"A-","3.7"},
-	{"B+","3.3"}, {"B","3.0"}, {"B-","2.7"},
-	{"C+","2.3"}, {"C","2.0"}, {"C-","1.7"},
-	{"D+","1.3"}, {"D","1.0"}, {"F","0.0"}
+vector<vector <string>> grade_point_collection = {
+	{"A+","4.3"}
 };
 
 vector <string> major_collection = {
@@ -82,6 +96,15 @@ void loading_animation() {
 	cout << "+" << endl;
 }
 
+int returnCourse_information_collection_location(string code) {
+	// Q4 FUNCTION
+	for (int i = 0; i < course_information_collection.size(); i++) {
+		if (course_information_collection[i][0] == code) {
+			return i;
+		}
+	}
+}
+
 class Student_record {
 public:
 	void setRecord(string n, string s_id, string m, int y, float gpa) {
@@ -98,6 +121,78 @@ public:
 	void setMajor(string m) {
 		major = "";
 		major = m;
+	}
+	int calculateCredits() {
+		int credits = 0;
+		for (size_t i = 0; i < subject_information.size(); i++) {
+			if (subject_information[i][1] == "---" || subject_information[i][1] == "F")
+				continue;
+			// 查找课程学分
+			for (size_t j = 0; j < course_information_collection.size(); j++) {
+				if (course_information_collection[j][0] == subject_information[i][0]) {
+					credits += atoi(course_information_collection[j][2].c_str());
+					break;
+				}
+			}
+		}
+		return credits;
+	}
+	void printSortedSubjects() {
+		// 冒泡排序按科目代码排序
+		for (size_t i = 0; i < subject_information.size() - 1; i++) {
+			for (size_t j = 0; j < subject_information.size() - i - 1; j++) {
+				if (subject_information[j][0] > subject_information[j + 1][0]) {
+					swap(subject_information[j], subject_information[j + 1]);
+				}
+			}
+		}
+		cout << "Code  Subject Title                 Grade  Credit\n";
+		cout << "------------------------------------------------\n";
+		for (size_t i = 0; i < subject_information.size(); i++) {
+			string code = subject_information[i][0];
+			string grade = subject_information[i][1];
+			string title = "";
+			string credit = "";
+			// 查找课程信息
+			for (size_t j = 0; j < course_information_collection.size(); j++) {
+				if (course_information_collection[j][0] == code) {
+					title = course_information_collection[j][1];
+					credit = course_information_collection[j][2];
+					break;
+				}
+			}
+			cout << left << setw(8) << code
+				<< " " << setw(40) << title
+				<< " " << setw(5) << grade
+				<< " " << credit << endl;
+		}
+		cout << "------------------------------------------------\n";
+	}
+	float calculateGPA() {
+		float total = 0.0;
+		int total_credit = 0;
+		for (size_t i = 0; i < subject_information.size(); i++) {
+			if (subject_information[i][1] == "---") continue;
+			// 获取绩点
+			float point = 0.0;
+			for (size_t j = 0; j < grade_point_collection.size(); j++) {
+				if (grade_point_collection[j][0] == subject_information[i][1]) {
+					point = atof(grade_point_collection[j][1].c_str());
+					break;
+				}
+			}
+			// 获取学分
+			int credit = 0;
+			for (size_t j = 0; j < course_information_collection.size(); j++) {
+				if (course_information_collection[j][0] == subject_information[i][0]) {
+					credit = atoi(course_information_collection[j][2].c_str());
+					break;
+				}
+			}
+			total += point * credit;
+			total_credit += credit;
+		}
+		return (total_credit > 0) ? total / total_credit : 0.0;
 	}
 	void setSubject_information(const vector<vector<string>>& subject_i) {
 		// this is use to set value in the beginning
@@ -139,6 +234,36 @@ public:
 			}
 		}
 	}
+	void printSubject_information() {
+		/*int largest_width;
+		for (int i = 0; i <= subject_information.size(); i++) {
+			if (i == 0) {
+				largest_width = subject_information[0][1].length();
+			}
+			else {
+				if (subject_information[i][1].length() > largest_width) {
+					largest_width = subject_information[0][1].length();
+				}
+			}
+		}*/
+		cout << "Code" << setw(18) << "Subject title" << setw(15) << "Grade" << setw(7) << "Credit" << endl;
+		for (int i = 0; i < subject_information.size(); i++) {
+			cout << subject_information[i][0] << "  " << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][1] << setw(7) << subject_information[i][1] << setw(8) << course_information_collection[returnCourse_information_collection_location(subject_information[i][0])][2] << endl;
+		}
+		copy_character("-", 7, 0);
+		copy_character(" ", 2, 0);
+	}
+	int returnSubject_information_exist(string check) {
+		for (int i = 0; i < subject_information.size(); i++) {
+			if (subject_information[i][0] == check) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	string getSubject_grade(string code) {
+		return subject_information[returnSubject_information_exist(code)][1];
+	}
 	string getS_ID() {
 		return S_ID;
 	}
@@ -147,6 +272,9 @@ public:
 	}
 	string getMajor() {
 		return major;
+	}
+	int getYear() {
+		return year;
 	}
 private:
 	string name;	// student's name
@@ -161,7 +289,9 @@ vector <Student_record> student_record_collection;//this vector use to contain a
 
 void showInfo() {
 	vector<vector <string>> student_info = {
-		{"Wu Jiacheng","24127656A","B07A"}
+		{"WU Jiacheng","24127656A","B07A"},
+		{"HUANG Haixiang","24037915A","B07A"},
+		{"YIM Chun Hei","24004908A","B07A"}
 	};
 	menu_word_output(-1, "Group Number: 7");
 	cout << endl;
@@ -174,7 +304,61 @@ void showInfo() {
 }
 
 void F1() {
+	student_record_collection.clear();
 
+	Student_record chan;
+	chan.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 0.0);
+	vector<vector<string>> chanSubjects = {
+		{"ENG2042", "Introduction to C++", "3", "A"},
+		{"ENG2219", "Signal Processing", "3", "A"},
+		{"LCH1302", "Professional English Writing", "2", "A"},
+		{"LCH1019", "Japanese I", "2", "--"}
+	};
+	chan.setSubject_information(chanSubjects);
+	//chan.calculateGPA();
+	student_record_collection.push_back(chan);
+
+	Student_record cheung;
+	cheung.setRecord("CHEUNG Jacky", "S232210", "Civil Engineering", 2, 0.0);
+	vector<vector<string>> cheungSubjects = {
+		{"ENG1113", "Structural Fundamental", "3", "B"},
+		{"ENG2250", "Engineering Mathematics", "3", "B+"},
+		{"ENG2041", "Applied Computing", "3", "F"},
+		{"LCH1302", "Professional English Writing", "2", "A-"},
+		{"LCH1019", "Japanese I", "2", "B"},
+		{"BUS1021", "Personal Financial Planning", "3", "--"},
+		{"ENG2042", "Introduction to C++", "3", "--"}
+	};
+	cheung.setSubject_information(cheungSubjects);
+	//cheung.calculateGPA();
+	student_record_collection.push_back(cheung);
+
+	Student_record pan;
+	pan.setRecord("PAN Peter", "S222343", "Global Business", 3, 0.0);
+	vector<vector<string>> panSubjects = {
+		{"BUS1021", "Personal Financial Planning", "3", "A"},
+		{"BUS2002", "Introduction to Economics", "3", "A+"},
+		{"BUS3006", "Understanding Globalization", "3", "B-"},
+		{"BUS4510", "Business Project Management 4", "3", "A-"},
+		{"BUS5523", "Final Year Project", "5", "B+"},
+		{"LCH1019", "Japanese I", "2", "C"}
+	};
+	pan.setSubject_information(panSubjects);
+	//pan.calculateGPA();
+	student_record_collection.push_back(pan);
+
+	Student_record wong;
+	wong.setRecord("WONG Kam", "S244617", "Educational Psychology", 1, 0.0);
+	vector<vector<string>> wongSubjects = {
+		{"PSY1234", "Introduction to Psychology", "2", "C"},
+		{"PSY2233", "Sociology", "3", "B"},
+		{"PSY2190", "Human Behavior", "3", "B+"}
+	};
+	wong.setSubject_information(wongSubjects);
+	//wong.calculateGPA();
+	student_record_collection.push_back(wong);
+
+	cout << "Starting data loaded successfully!\n";
 }
 
 void F2() {
@@ -182,17 +366,500 @@ void F2() {
 }
 
 void F3() {
+	string student_id;
+	bool exists = false;
+	int index = -1;
+	cout << "Enter Student ID: ";
+	cin.ignore();
+	getline(cin, student_id);
 
+	// Check if student exists
+	for (int i = 0; i < student_record_collection.size(); i++) {
+		if (student_record_collection[i].getS_ID() == student_id) {
+			exists = true;
+			index = i;
+			break;
+		}
+	}
+
+	if (exists) {
+		// Delete student
+		cout << "Student found:" << endl;
+		student_record_collection[index].printData();
+		cout << endl;
+
+		char confirm;
+		cout << "Confirm deletion (Y/N): ";
+		cin >> confirm;
+
+		if (toupper(confirm) == 'Y') {
+			student_record_collection.erase(student_record_collection.begin() + index);
+			cout << "Student deleted successfully." << endl;
+		}
+		else {
+			cout << "Deletion canceled." << endl;
+		}
+	}
+	else {
+		// Add student
+		string name, major, cohort_str;
+		int cohort_num;
+		int retries = 0;
+		bool surname = true;
+		bool FChange = false;
+		// Get student name
+		cout << "Enter student name (Input SURNAME Fisrt): ";
+		cin.ignore();
+		getline(cin, name);
+
+
+		// Validate cohort
+		bool valid = false;
+		while (retries < 3) {
+			cout << "Enter cohort year (00-24): "; //(00-24) or (21-24)
+			getline(cin, cohort_str);
+
+			if (cohort_str.length() != 2 || !isdigit(cohort_str[0]) || !isdigit(cohort_str[1])) {
+				retries++;
+				cout << "Invalid format. Please enter 2 digits." << endl;
+				continue;
+			}
+
+			cohort_num = stoi(cohort_str);
+			if (cohort_num < 0 || cohort_num > 24) { // (00-24) or (21-24)
+				retries++;
+				cout << "Cohort must be between 00 and 24." << endl; // (00-24) or (21-24)
+				continue;
+			}
+
+			valid = true;
+			break;
+		}
+
+		if (!valid) {
+			cout << "Too many invalid attempts. Operation canceled." << endl;
+			return;
+		}
+
+		// Get major
+		cout << "Enter major: ";
+		cin.ignore();
+		getline(cin, major);
+		bool Capitalize = true;
+		// Capitalize major
+
+
+		// Generate Student ID using cohort_str (2 digits)
+		srand(time(0));
+		int random_num = rand() % 1000;
+		string generated_id;
+		int check_digit;
+		int sum = 0;
+		string random_part = to_string(random_num);
+		string id_body;
+		random_part = string(3 - random_part.length(), '0') + random_part;
+
+		id_body = cohort_str + random_part;
+		for (char c : id_body)
+			sum = sum + c - '0';
+		check_digit = sum % 10;
+		generated_id = "S" + id_body + to_string(check_digit);
+
+		// Calculate year
+		int current_year = 2025;
+		int year = current_year - (2000 + cohort_num);
+
+		// Create and add student
+		Student_record new_student;
+		new_student.setRecord(name, generated_id, major, year, 0.0f);
+		student_record_collection.push_back(new_student);
+
+		cout << "Student added successfully. Generated ID: " << generated_id << " " << "Year " << year << endl;
+	}
 }
 
+void copy_object_data(vector <Student_record> student_record_collection_oringinal) {
+	// this function use to copy obejct vector
+	for (int i = 0; i < student_record_collection.size(); i++) {
+		student_record_collection_oringinal.push_back(student_record_collection[i]);
+	}
+}
+
+void show_edited_information(string before, string current) {
+	//int margin = abs(current.size() - before.size());
+	cout << "Before" << setw(fabs(before.size() - 6) + 4 + 7) << "Current" << endl;
+	copy_character("-", before.size(), 0);
+	cout << setw(5);
+	copy_character("-", current.size(), 1);
+	cout << before << " -> " << current;
+};
+
+void prompt_change_student_information(string i, string p, string c, string confirma, string mission) {
+	cout << "The current " << mission << " of student" << "(" << i << ")" << " is :" << p << endl << endl;
+	cout << "Enter a new to the student " << "(" << i << "): ";
+	cin.ignore();
+	getline(cin, c);
+
+	cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+	cin >> confirma;
+	cout << endl;
+}
+
+string name_upper(string name) {
+	bool space = false;
+	for (int i = 0; i < name.size(); i++) {
+		if (space == false) {
+			if (name[i] >= 'a' && name[i] <= 'z') {
+				name[i] = toupper(name[i]);
+			}
+			if (name[i] == ' ') {
+				space = true;
+			}
+		}
+		else {
+			// first name check
+			if (name[i] >= 'a' && name[i] <= 'z' && name[i - 1] == ' ') {
+				name[i] = toupper(name[i]);
+			}
+			if (name[i] >= 'A' && name[i] <= 'Z' && name[i - 1] != ' ') {
+				name[i] = tolower(name[i]);
+			}
+		}
+	}
+	return name;
+}
+
+string major_upper(string major) {
+	major[0] = major[0] - 'a' + 'A';
+
+	for (int i = 1; i < major.size(); i++) {
+		if (major[i - 1] == ' ') {
+			major[i] = major[i] - 'a' + 'A';
+		}
+		if (major[i] >= 'A' && major[i] <= 'Z' && major[i - 1] != ' ') {
+			major[i] = tolower(major[i]);
+		}
+	}
+	return major;
+}
+
+bool returnCourse_information_collection_exist(string check) {
+	for (int i = 0; i < course_information_collection.size(); i++) {
+		if (course_information_collection[i][0] == check) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void addCourse_information_collection(string code, string course_name, string credit) {
+	course_information_collection.push_back({ code,course_name,credit });
+}
+
+bool subject_code_valid_check(string code) {
+	int capital_letter = 0;
+	int number_digits = 0;
+
+	if (code.length() == 7) {
+		for (int i = 0; i < 7; i++) {
+			if (code[i] >= 'A' && code[i] <= 'Z') {
+				capital_letter++;
+			}
+			if (code[i] >= '0' && code[i] <= '9') {
+				number_digits++;
+			}
+		}
+	}
+	if (capital_letter == 3 && number_digits == 4) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void show_all_vector_information(vector<vector <string>> element) {
+	for (int i = 0; i < element.size(); i++) {
+		for (int j = 0; j < element[i].size(); j++) {
+			cout << element[i][j] << "  ";
+		}
+		cout << endl;
+	}
+}
 
 void F4() {
+	string inputed_ID = "";
+	char option;
+	bool valid_SID = false;
+	int trial_time = 0;
+	int direct_object_location;
 
+	cout << "Please input a StudentID for check: ";
+	cin >> inputed_ID;
+	vector <Student_record> student_record_collection_oringinal;
+
+	// check for whether the studentID exits or not
+	for (int i = 0; i < student_record_collection.size(); i++) {
+		if (inputed_ID == student_record_collection[i].getS_ID()) {
+			valid_SID = true;
+			direct_object_location = 0;
+		}
+	}
+	if (valid_SID == true) {
+		do {
+			string previous_data = "";
+			vector <vector<string>> previous_data_arrary;
+			string current_data = "";
+			string confirmation = "";
+
+			cout << "\n\n";
+			cout << "Action	for Student ID: " << inputed_ID << endl;
+			cout << "**** " << "Edit Student Menu" << " ****" << endl;
+			menu_word_output(1, "Edit Student Name");
+			menu_word_output(2, "Edit Major");
+			menu_word_output(3, "Edit Subject List");
+			menu_word_output(4, "Return to Main Menu");
+			menu_word_output(5, "Show all subject provided");
+			menu_word_output(6, "Show the grade point");
+			copy_character("*", 29, 1);
+			cout << "Option (1-4): ";
+			cin >> option;
+			cin.ignore();
+
+			cout << "\n\n";
+
+			switch (option) {
+			case '1':
+				previous_data = student_record_collection[direct_object_location].getName();
+				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
+				copy_character("-", previous_data.length(), 1);
+				cout << endl;
+				cout << "Enter a new name to the student " << "(" << inputed_ID << "): ";
+				cin.ignore();
+				getline(cin, current_data);
+
+				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+				cin.ignore();
+				cin >> confirmation;
+				cout << endl << endl;
+
+				if (confirmation == "Y" || confirmation == "y") {
+					current_data = name_upper(current_data);
+					student_record_collection[direct_object_location].setName(current_data);
+					show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
+					cout << "The change is successfully." << endl;
+				}
+				else if (confirmation == "N" || confirmation == "n") {
+					cout << "The change is readly withdraw." << endl;
+				}
+				else {
+					cout << "Invalid input!";
+				}
+				cout << endl;
+				break;
+			case '2':
+				previous_data = student_record_collection[direct_object_location].getMajor();
+				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
+				copy_character("-", previous_data.length(), 1);
+				cout << endl;
+				cout << "Enter a new major to the student " << "(" << inputed_ID << "): ";
+				cin.ignore();
+				getline(cin, current_data);
+
+				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+				cin.ignore();
+				cin >> confirmation;
+				cout << endl;
+
+				if (confirmation == "Y" || confirmation == "y") {
+					current_data = major_upper(current_data);
+					student_record_collection[direct_object_location].setMajor(current_data);
+					show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+					cout << "The change is successfully." << endl;
+				}
+				else if (confirmation == "N" || confirmation == "n") {
+					cout << "The change is readly withdraw." << endl;
+				}
+				else {
+					cout << "Invalid input!";
+				}
+				break;
+			case '3':
+				//student_record_collection[direct_object_location].copySubjectInformation(previous_data_arrary);
+				cout << "The current subject of student" << "(" << inputed_ID << ")" << " is :" << endl << endl;
+				student_record_collection[direct_object_location].printSubject_information();
+				trial_time = 0;
+				cout << endl;
+				cout << "Which subject do you want to change" << endl;
+				do {
+					cout << "Enter subject code: " << endl << endl;
+					getline(cin, previous_data); // the subject name or code the user want to change
+					if (subject_code_valid_check(previous_data) == true) {
+						menu_word_output(-1, previous_data);
+						break;
+					}
+					else {
+						trial_time++;
+					}
+					menu_word_output(-1, previous_data);
+
+					cout << "You still have " << (3 - trial_time) << " chance." << endl;
+				} while (trial_time < 3);
+
+				if (subject_code_valid_check(previous_data) == true && trial_time < 3) {
+					if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) != -1) {
+						// 1st case
+						cout << "Now you can change the student " << inputed_ID << "'s " << previous_data << "'s grade: " << endl;
+						getline(cin, current_data); //grade value
+
+						if (student_record_collection[direct_object_location].getSubject_grade(previous_data) != "--" && current_data == "--") {
+							// can't change the grade condition
+							menu_word_output(-1, "Sorry you can't change the value, bacause the subject's code is continuous.");
+						}
+						else {
+							cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+
+							cin >> confirmation;
+							cout << endl;
+
+							if (confirmation == "Y" || confirmation == "y") {
+								current_data = name_upper(current_data);
+								student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
+								//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+								cout << "The change is successfully." << endl;
+							}
+							else if (confirmation == "N" || confirmation == "n") {
+								cout << "The change is readly withdraw." << endl;
+							}
+							else {
+								cout << "Invalid input!";
+							}
+						}
+					}
+					else if (student_record_collection[direct_object_location].returnSubject_information_exist(previous_data) == -1 && returnCourse_information_collection_exist(previous_data) == true) {
+						// 2nd case
+						menu_word_output(-1, "The subject is going to add into the student's subject lists");
+						menu_word_output(-1, "Please input the subject's grade:");
+						cin.ignore();
+						getline(cin, current_data);
+
+						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+						cin >> confirmation;
+						cout << endl;
+
+						if (confirmation == "Y" || confirmation == "y") {
+							current_data = name_upper(current_data);
+							student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+							cout << "The change is successfully." << endl;
+						}
+						else if (confirmation == "N" || confirmation == "n") {
+							cout << "The change is readly withdraw." << endl;
+						}
+						else {
+							cout << "Invalid input!";
+						}
+					}
+					else {
+						// 3rd case
+						string temp = "";
+						menu_word_output(-1, "The subject is going to add into the student's subject lists");
+						menu_word_output(-1, "Please input the new subject's title");
+						getline(cin, current_data);
+						menu_word_output(-1, "Please input the new subject's credit:");
+						getline(cin, temp);
+
+						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+						getline(cin, confirmation);
+						cout << endl;
+
+						if (confirmation == "Y" || confirmation == "y") {
+							current_data = major_upper(current_data);
+							addCourse_information_collection(previous_data, current_data, temp);
+							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+
+							menu_word_output(-1, "The subject is going to add into the student's subject lists");
+							menu_word_output(-1, "Please input the subject's grade to the student:");
+							getline(cin, current_data);
+							student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+
+							cout << "The change is successfully." << endl;
+						}
+						else if (confirmation == "N" || confirmation == "n") {
+							cout << "The change is readly withdraw." << endl;
+						}
+						else {
+							cout << "Invalid input!";
+						}
+					}
+				}
+				break;
+			case '4':
+				cout << "You are returing to the Main Menu." << endl;
+				//loading_animation();
+				break;
+			case '5':
+				show_all_vector_information(course_information_collection);
+				break;
+			case '6':
+				cout << "Grade" << "  " << "Point represent" << endl;
+				show_all_vector_information(grade_point_collection);
+				break;
+			default:
+				cout << "No such function option " << option << endl;
+				break;
+			}
+		} while (option != '4');
+	}
 }
 
 void F5() {
-}
 
+	string sid;
+	cout << "Enter Student ID: ";
+	cin >> sid;
+	cin.ignore();
+
+	// 查找学生
+	int index = -1;
+	for (size_t i = 0; i < student_record_collection.size(); i++) {
+		if (student_record_collection[i].getS_ID() == sid) {
+			index = i;
+			break;
+		}
+	}
+
+	if (index == -1) {
+		cout << "Student not found!\n";
+		return;
+	}
+
+	Student_record s = student_record_collection[index];
+
+	// 打印头部信息
+	cout << "\nName: " << s.getName() << endl
+		<< "Student ID: " << sid << endl
+		<< "Major: " << s.getMajor() << endl
+		<< "Year: " << s.getYear() << endl;
+
+	// 打印排序后的科目
+	s.printSortedSubjects();
+
+	// 计算学分和GPA
+	int credits = s.calculateCredits();
+	float gpa = s.calculateGPA();
+
+	cout << "Credits attained: " << credits << endl;
+	if (gpa > 0.001) {
+		cout << fixed << setprecision(2) << "GPA: " << gpa << endl;
+	}
+	else {
+		cout << "GPA: N/A" << endl;
+	}
+}
 
 void F6() {
 
@@ -215,26 +882,14 @@ void F7() {
 		major_ouput.push_back({ major_collection[i],to_string(sum) });
 	}
 
-	//show_all_vector_information(major_ouput);
-	/*if (sequence == "ASC") {
-
-	}
-	else if (sequence == "DESC") {
-
-	}
-	else {
-		menu_word_output(-1, "In valid input!");
-	}*/
+	show_all_vector_information(major_ouput);
 }
 
 int main() {
 	char prog_choice;
 	bool loading_data = false;
 
-	//loading_animation();
-
-	//temporary data
-	Student_record S243560;
+	loading_animation();
 
 	menu_word_output(-1, "Welcome to use Student Management System");
 
