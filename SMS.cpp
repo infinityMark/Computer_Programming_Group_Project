@@ -27,7 +27,7 @@ vector<vector <string>> course_information_collection = {
 	{"BUS1021", "Personal Financial Planning", "3"},
 	{"BUS2002", "Introduction to Economics", "3"},
 	{"BUS3006", "Understanding Globalization", "3"},
-	{"BUS4510", "Business Project Management 4", "3"},
+	{"BUS4510", "Business Project Management", "4"},
 	{"BUS5523", "Final Year Project", "5"},
 	{"LCH1019", "Japanese I", "2"},
 	{"PSY1234", "Introduction to Psychology", "2"},
@@ -297,10 +297,10 @@ void F1() {
 	Student_record chan;
 	chan.setRecord("CHAN Tai Man", "S243560", "Information Engineering", 1, 0.0);
 	vector<vector<string>> chanSubjects = {
-		{"ENG2042", "Introduction to C++", "3", "A"},
-		{"ENG2219", "Signal Processing", "3", "A"},
-		{"LCH1302", "Professional English Writing", "2", "A"},
-		{"LCH1019", "Japanese I", "2", "--"}
+		{"ENG2042", "A"},
+		{"ENG2219", "A"},
+		{"LCH1302", "A"},
+		{"LCH1019", "--"}
 	};
 	chan.setSubject_information(chanSubjects);
 	chan.calculateGPA();
@@ -309,13 +309,13 @@ void F1() {
 	Student_record cheung;
 	cheung.setRecord("CHEUNG Jacky", "S232210", "Civil Engineering", 2, 0.0);
 	vector<vector<string>> cheungSubjects = {
-		{"ENG1113", "Structural Fundamental", "3", "B"},
-		{"ENG2250", "Engineering Mathematics", "3", "B+"},
-		{"ENG2041", "Applied Computing", "3", "F"},
-		{"LCH1302", "Professional English Writing", "2", "A-"},
-		{"LCH1019", "Japanese I", "2", "B"},
-		{"BUS1021", "Personal Financial Planning", "3", "--"},
-		{"ENG2042", "Introduction to C++", "3", "--"}
+		{"ENG1113", "B"},
+		{"ENG2250", "B+"},
+		{"ENG2041", "F"},
+		{"LCH1302", "A-"},
+		{"LCH1019", "B"},
+		{"BUS1021", "--"},
+		{"ENG2042", "--"}
 	};
 	cheung.setSubject_information(cheungSubjects);
 	cheung.calculateGPA();
@@ -324,12 +324,12 @@ void F1() {
 	Student_record pan;
 	pan.setRecord("PAN Peter", "S222343", "Global Business", 3, 0.0);
 	vector<vector<string>> panSubjects = {
-		{"BUS1021", "Personal Financial Planning", "3", "A"},
-		{"BUS2002", "Introduction to Economics", "3", "A+"},
-		{"BUS3006", "Understanding Globalization", "3", "B-"},
-		{"BUS4510", "Business Project Management 4", "3", "A-"},
-		{"BUS5523", "Final Year Project", "5", "B+"},
-		{"LCH1019", "Japanese I", "2", "C"}
+		{"BUS1021", "A"},
+		{"BUS2002", "A+"},
+		{"BUS3006", "B-"},
+		{"BUS4510", "A-"},
+		{"BUS5523", "B+"},
+		{"LCH1019", "C"}
 	};
 	pan.setSubject_information(panSubjects);
 	pan.calculateGPA();
@@ -338,9 +338,9 @@ void F1() {
 	Student_record wong;
 	wong.setRecord("WONG Kam", "S244617", "Educational Psychology", 1, 0.0);
 	vector<vector<string>> wongSubjects = {
-		{"PSY1234", "Introduction to Psychology", "2", "C"},
-		{"PSY2233", "Sociology", "3", "B"},
-		{"PSY2190", "Human Behavior", "3", "B+"}
+		{"PSY1234", "C"},
+		{"PSY2233", "B"},
+		{"PSY2190", "B+"}
 	};
 	wong.setSubject_information(wongSubjects);
 	wong.calculateGPA();
@@ -550,6 +550,15 @@ bool returnMajor_information_collection_exist(string check) {
 	return false;
 }
 
+bool returnExist(string check,vector <vector <string>>list,int position) {
+	for (int i = 0; i < list.size(); i++) {
+		if (list[i][position] == check) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void addCourse_information_collection(string code, string course_name, string credit) {
 	course_information_collection.push_back({ code,course_name,credit });
 }
@@ -576,10 +585,10 @@ bool subject_code_valid_check(string code) {
 	}
 }
 
-void show_all_vector_information(vector<vector <string>> element) {
+void show_all_vector_information(vector<vector <string>> element, int space) {
 	for (int i = 0; i < element.size(); i++) {
 		for (int j = 0; j < element[i].size(); j++) {
-			cout << element[i][j] << "  ";
+			cout << left << setw(space) <<element[i][j];
 		}
 		cout << endl;
 	}
@@ -717,22 +726,26 @@ void F4() {
 							menu_word_output(-1, "Sorry you can't change the value, bacause the subject's code is continuous.");
 						}
 						else {
-							cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+							if (returnExist(current_data, grade_point_collection, 0)) {
+								cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
-							cin >> confirmation;
-							cout << endl;
+								cin >> confirmation;
+								cout << endl;
 
-							if (confirmation == "Y" || confirmation == "y") {
-								current_data = name_upper(current_data);
-								student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
-								//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-								cout << "The change is successfully." << endl;
-							}
-							else if (confirmation == "N" || confirmation == "n") {
-								cout << "The change is readly withdraw." << endl;
+								if (confirmation == "Y" || confirmation == "y") {
+									current_data = name_upper(current_data);
+									student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
+									cout << "The change is successfully." << endl;
+								}
+								else if (confirmation == "N" || confirmation == "n") {
+									cout << "The change is readly withdraw." << endl;
+								}
+								else {
+									cout << "Invalid input!";
+								}
 							}
 							else {
-								cout << "Invalid input!";
+								menu_word_output(-1, "Invalid GPA Code");
 							}
 						}
 					}
@@ -799,11 +812,11 @@ void F4() {
 				//loading_animation();
 				break;
 			case '5':
-				show_all_vector_information(course_information_collection);
+				show_all_vector_information(course_information_collection,40);
 				break;
 			case '6':
 				cout << "Grade" << "  " << "Point represent" << endl;
-				show_all_vector_information(grade_point_collection);
+				show_all_vector_information(grade_point_collection,10);
 				break;
 			default:
 				cout << "No such function option " << option << endl;
@@ -881,7 +894,7 @@ void F7() {
 		major_ouput.push_back({ major_collection[i],to_string(sum) });
 	}
 
-	show_all_vector_information(major_ouput);
+	show_all_vector_information(major_ouput,30);
 }
 
 int main() {
