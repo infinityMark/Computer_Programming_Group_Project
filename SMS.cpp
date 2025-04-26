@@ -935,21 +935,42 @@ int main() {
 			loading_data = true;
 			F1(); break;
 		case '2':
-			if (loading_data == false) break;
-			F2(); break;
+			if (loading_data == false) {
+				menu_word_output(-1, "Data does not be loaded");
+				menu_word_output(-1, "Please input 1 to load data");
+				break;
+			}
+			F2();
+			break;
 		case '3':
-			if (loading_data == false) break;
+			if (loading_data == false) {
+				menu_word_output(-1, "Data does not be loaded");
+				menu_word_output(-1, "Please input 1 to load data");
+				break;
+			}
 			F3(); break;
 		case '4':
-			if (loading_data == false) break;
+			if (loading_data == false) {
+				menu_word_output(-1, "Data does not be loaded");
+				menu_word_output(-1, "Please input 1 to load data");
+				break;
+			}
 			F4(); break;
 		case '5':
-			if (loading_data == false) break;
+			if (loading_data == false) {
+				menu_word_output(-1, "Data does not be loaded");
+				menu_word_output(-1, "Please input 1 to load data");
+				break;
+			}
 			F5(); break;
 		case '6':
 			F6(); break;
 		case '7':
-			if (loading_data == false) break;
+			if (loading_data == false) {
+				menu_word_output(-1, "Data does not be loaded");
+				menu_word_output(-1, "Please input 1 to load data");
+				break;
+			}
 			F7(); break;
 		default:
 			cout << "No such function option " << prog_choice << endl;
