@@ -249,7 +249,7 @@ public:
 	}
 
 	void printData() {
-		cout << "student: " << name << " ID: " << S_ID << " Major: " << major << " Year" << year;
+		cout << "student: " << name << " ID: " << S_ID << " Major: " << major << " Year: " << year;
 		if (GPA < 0.001)
 		{
 			cout << " GPA: N/A";
@@ -313,7 +313,8 @@ void showInfo() {
 		{"HUANG Haixiang","24037915A","B07A"},
 		{"YIM Chun Hei","24004908A","B07A"},
 		{"MING Tsz Ching","24052040A","B07B"},
-		{"Sze To Siu Lung", "24092222A", "B07B"}
+		{"Sze To Siu Lung", "24092222A", "B07B"},
+		{"LEUNG Hon Hin", "24XXXXXXA", "B07A"}
 	};
 	menu_word_output(-1, "Group Number: 7");
 	cout << endl;
@@ -628,7 +629,7 @@ void F3() {
 		new_student.setGPA(0.0); // GPA calculated later
 		student_record_collection.push_back(new_student);
 
-		cout << "Student added successfully.  " << "New student's ID for " << name << ": " << generated_id << "Year: " << year << endl;
+		cout << "Student added successfully.  " << "New student's ID for " << name << ": " << generated_id << " Year: " << year << endl;
 		cout << "completed student Record: \n";
 		cout << "Name: " << name << "Major" << major << " Student ID: " << generated_id << "  Year: " << year << endl;
 	}
@@ -1019,7 +1020,7 @@ void F6() {
 	} while (toupper(confirm) != 'Y' && toupper(confirm) != 'N');
 	if (toupper(confirm) == 'Y') {
 		cout << "Group 7 Members:\n";
-		cout << "Name: ,    ID: , Tutorial Group: \n";
+		cout << "Name: LEUNG Hon Hin,   ID: 24XXXXXXA, Tutorial Group: B07A\n";
 		cout << "Name: MING Tsz Ching,  ID: 24052040A, Tutorial Group: B07B\n";
 		cout << "Name: HUANG Haixiang,  ID: 24037915A, Tutorial Group: B07A\n";
 		cout << "Name: WU Jiacheng,     ID: 24127656A, Tutorial Group: B07A\n";
