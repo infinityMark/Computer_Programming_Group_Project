@@ -44,7 +44,8 @@ vector<vector <string>> grade_point_collection = {
 	{"A+","4.3"}, {"A","4.0"}, {"A-","3.7"},
 	{"B+","3.3"}, {"B","3.0"}, {"B-","2.7"},
 	{"C+","2.3"}, {"C","2.0"}, {"C-","1.7"},
-	{"D+","1.3"}, {"D","1.0"}, {"F","0.0"}
+	{"D+","1.3"}, {"D","1.0"}, {"F","0.0"},
+	{"--","0.0"}
 };
 
 vector <string> major_collection = {
@@ -797,7 +798,13 @@ void F4() {
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
 				for (int i = 0; i < major_collection.size(); i++) {
-					menu_word_output(i + 1, major_collection[i]);
+					if (major_collection[i] == previous_data) {
+						cout << "[" << i + 1 << "] " << major_collection[i];
+						cout << " <- The major is taking" << endl;
+					}
+					else {
+						menu_word_output(i + 1, major_collection[i]);
+					}
 				}
 				cout << "Enter a new major to the student " << "(" << inputed_ID << "), you may input relevant number or full name: ";
 				getline(cin, current_data);
@@ -808,7 +815,7 @@ void F4() {
 				cin.ignore();
 				cout << endl;
 
-				if (current_data.length() <= 3 && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
+				if (current_data <"a" && current_data > "Z" && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
 					if (confirmation == "Y" || confirmation == "y") {
 						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data) - 1]);
 						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
@@ -824,7 +831,7 @@ void F4() {
 				else {
 					if (confirmation == "Y" || confirmation == "y") {
 						current_data = major_upper(current_data);
-						if (returnMajor_information_collection_exist(current_data)) {
+						if (returnMajor_information_collection_exist(current_data) == true) {
 							student_record_collection[direct_object_location].setMajor(current_data);
 							show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
 							cout << "The change is successfully." << endl;
@@ -846,6 +853,7 @@ void F4() {
 				student_record_collection[direct_object_location].printSortedSubjects();
 				trial_time = 0;
 				cout << endl;
+				menu_word_output(-1, "All subject provided");
 				cout << "Which subject do you want to change" << endl;
 				do {
 					cout << "Enter subject code: " << endl << endl;
