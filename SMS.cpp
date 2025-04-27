@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -590,7 +591,7 @@ void F3() {
 			}
 			menu_word_output(major_collection.size() + 1, "Create New Major");
 			cout << "Please type the Name/Number of Major. Also you can add a new Major.\n";
-			cout << "Major �]max 30 chars): ";
+			cout << "Major (max 30 chars): ";
 			getline(cin, major);
 			major = major_upper(major);
 			if (!(major.empty()) && major.length() <= 30) {
@@ -608,7 +609,7 @@ void F3() {
 				bool finds2 = false;
 				if (finds == false) {
 					cout << "Please input New Major Name One More Time \n";
-					cout << "New Major �]max 30 chars): ";
+					cout << "New Major (max 30 chars): ";
 					getline(cin, major);
 					major = major_upper(major);
 					for (size_t i = 0; i < major_collection.size(); i++) {
@@ -839,6 +840,23 @@ void printSubjectTaking(vector <vector<string>>all_course, vector <vector<string
 	}
 }
 
+bool current_data_valid(string check) {
+	if (check.empty()) {
+		return false;
+	}
+	else {
+		for (int i = 1; i < check.length(); i++) {
+			if (check[i] >= 'a' && check[i] <= 'Z') {
+				continue;
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+
 void F4() {
 	//Made by 24127656A
 	string inputed_ID = "";
@@ -891,25 +909,30 @@ void F4() {
 				cout << "Enter a new name to the student " << "(" << inputed_ID << "): ";
 				getline(cin, current_data);
 
-				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+				if (current_data_valid(current_data)==true) {
+					cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
-				cin >> confirmation;
-				cin.ignore();
-				cout << endl << endl;
+					cin >> confirmation;
+					cin.ignore();
+					cout << endl << endl;
 
-				if (confirmation == "Y" || confirmation == "y") {
-					current_data = name_upper(current_data);
-					student_record_collection[direct_object_location].setName(current_data);
-					show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
-					cout << "The change is successfully." << endl;
-				}
-				else if (confirmation == "N" || confirmation == "n") {
-					cout << "The change is readly withdraw." << endl;
+					if (confirmation == "Y" || confirmation == "y") {
+						current_data = name_upper(current_data);
+						student_record_collection[direct_object_location].setName(current_data);
+						show_edited_information(previous_data, student_record_collection[direct_object_location].getName());
+						cout << "The change is successfully." << endl;
+					}
+					else if (confirmation == "N" || confirmation == "n") {
+						cout << "The change is readly withdraw." << endl;
+					}
+					else {
+						cout << "Invalid input!";
+					}
+					cout << endl;
 				}
 				else {
-					cout << "Invalid input!";
+					menu_word_output(-1, "Invalid name");
 				}
-				cout << endl;
 				break;
 			case '2': // edit major
 				previous_data = student_record_collection[direct_object_location].getMajor();
@@ -1075,21 +1098,26 @@ void F4() {
 								cout << endl;
 
 								if (confirmation == "Y" || confirmation == "y") {
-									current_data = major_upper(current_data);
-									addCourse_information_collection(previous_data, current_data, temp);
-									//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-									menu_word_output(-1, "The subject is going to add into the student's subject lists");
-									menu_word_output(-1, "Please input the subject's grade to the student:");
-									getline(cin, current_data);
-									if (returnExist(current_data, grade_point_collection, 0)) {
-										student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
-										float new_gpa = student_record_collection[direct_object_location].calculateGPA();
-										student_record_collection[direct_object_location].setGPA(new_gpa);
+									if (current_data_valid(current_data) == true) {
+										current_data = major_upper(current_data);
+										addCourse_information_collection(previous_data, current_data, temp);
+										//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+										menu_word_output(-1, "The subject is going to add into the student's subject lists");
+										menu_word_output(-1, "Please input the subject's grade to the student:");
+										getline(cin, current_data);
+										if (returnExist(current_data, grade_point_collection, 0)) {
+											student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+											float new_gpa = student_record_collection[direct_object_location].calculateGPA();
+											student_record_collection[direct_object_location].setGPA(new_gpa);
 
-										cout << "The change is successfully." << endl;
+											cout << "The change is successfully." << endl;
+										}
+										else {
+											menu_word_output(-1, "You enter invalid grade point!");
+										}
 									}
 									else {
-										menu_word_output(-1, "You enter invalid grade point!");
+										menu_word_output(-1, "Invalid title");
 									}
 								}
 								else if (confirmation == "N" || confirmation == "n") {
