@@ -727,6 +727,19 @@ bool check_current_data_isCode(string check) {
 	return true;
 }
 
+void printMajor_Provided(string p_d) {
+	//Made by 24127656A
+	for (int i = 0; i < major_collection.size(); i++) {
+		if (major_collection[i] == p_d) {
+			cout << "[" << i + 1 << "] " << major_collection[i];
+			cout << " <- The major is taking" << endl;
+		}
+		else {
+			menu_word_output(i + 1, major_collection[i]);
+		}
+	}
+}
+
 void F4() {
 	//Made by 24127656A
 	string inputed_ID = "";
@@ -804,15 +817,7 @@ void F4() {
 				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
-				for (int i = 0; i < major_collection.size(); i++) {
-					if (major_collection[i] == previous_data) {
-						cout << "[" << i + 1 << "] " << major_collection[i];
-						cout << " <- The major is taking" << endl;
-					}
-					else {
-						menu_word_output(i + 1, major_collection[i]);
-					}
-				}
+				printMajor_Provided(previous_data);
 				cout << "Enter a new major to the student " << "(" << inputed_ID << "), you may input relevant number or full name: ";
 				getline(cin, current_data);
 
