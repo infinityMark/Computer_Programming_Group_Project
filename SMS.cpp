@@ -578,39 +578,38 @@ void F3() {
 
 		// Input major with retries
 		valid = false;
-		int major_choice;
 		while (retries < 3) {
-			cout << "Choose Major:\n";
-			menu_word_output(1, "Information Engineering");
-			menu_word_output(2, "Civil Engineering");  // Corrected typo
-			menu_word_output(3, "Global Business");
-			menu_word_output(4, "Educational Psychology");  // Corrected typo
-			menu_word_output(5, "Add New Major");
-			cout << "Option (1-5): ";
-			cin >> major_choice;
-			cin.ignore();
-
-			switch (major_choice) {
-			case 1: major = "Information Engineering"; break;
-			case 2: major = "Civil Engineering"; break;  // Corrected
-			case 3: major = "Global Business"; break;
-			case 4: major = "Educational Psychology"; break;  // Corrected
-			case 5:
-				cout << "Enter new major (max 30 chars): ";
-				getline(cin, major);
-				major = major_upper(major);
-				if (!(major.empty()) && major.length() <= 30) {
-					major_collection.push_back(major);
+			for (size_t i = 0; i < major_collection.size(); i++) {
+				{
+					menu_word_output(i + 1, major_collection[i]);
+				}
+			}
+			cout << "[5] ________________\n";
+			cout << "Please type the Major Name. Also you can add a new Major \n";
+			cout << "Major: ";
+			getline(cin, major);
+			major = major_upper(major);
+			if (!(major.empty()) && major.length() <= 30) {
+				if (major == "Information Engineering") {
+					major = "Information Engineering";
+				}
+				else if (major_upper(major) == "Civil Engineering") {
+					major = "Civil Engineering";
+				}
+				else if (major_upper(major) == "Global Business") {
+					major = "Gobal Business";
+				}
+				else if (major_upper(major) == "Educational Psychology") {
+					major = "Educational Psychology";
 				}
 				else {
-					retries++;
-					cout << "Invalid major length. Attempts left: " << (3 - retries) << endl;
-					continue;
+					major_collection.push_back(major_upper(major));
+					cout << "New major added successfully.\n";
 				}
-				break;
-			default:
+			}
+			else {
 				retries++;
-				cout << "Invalid choice. Attempts left: " << (3 - retries) << endl;
+				cout << "Invalid major length. Attempts left: " << (3 - retries) << endl;
 				continue;
 			}
 			valid = true;
@@ -647,7 +646,7 @@ void F3() {
 		cout << "Student added successfully.  " << "New student's ID for " << name << ": " << generated_id << " Year: " << year << endl;
 		cout << "completed student Record: \n";
 
-		cout << "Name: " << name << "\nMajor" << major << "\nStudent ID: " << generated_id << " \nYear: " << year << endl;
+		cout << "Name: " << name << "\nMajor: " << major << "\nStudent ID: " << generated_id << "\nYear: " << year << endl;
 	}
 }
 
@@ -929,6 +928,8 @@ void F4() {
 						if (confirmation == "Y" || confirmation == "y") {
 							current_data = name_upper(current_data);
 							student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+							float new_gpa = student_record_collection[direct_object_location].calculateGPA();
+							student_record_collection[direct_object_location].setGPA(new_gpa);
 							//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
 							cout << "The change is successfully." << endl;
 						}
@@ -962,6 +963,8 @@ void F4() {
 								getline(cin, current_data);
 								if (returnExist(current_data, grade_point_collection, 0)) {
 									student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+									float new_gpa = student_record_collection[direct_object_location].calculateGPA();
+									student_record_collection[direct_object_location].setGPA(new_gpa);
 
 									cout << "The change is successfully." << endl;
 								}
