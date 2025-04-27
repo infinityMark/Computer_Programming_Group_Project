@@ -1,4 +1,4 @@
-	#include <iostream>
+#include <iostream>
 #include <iomanip>
 #include <string>
 #include <windows.h>
@@ -55,6 +55,7 @@ vector <string> major_collection = {
 };
 
 void menu_word_output(int order, string word) {
+	//Made by 24127656A
 	// this is menu word design interface
 	if (order == -1) {
 		cout << word << endl;
@@ -64,6 +65,7 @@ void menu_word_output(int order, string word) {
 	}
 }
 void copy_character(string character, int sum, int space) {
+	//Made by 24127656A
 	// this can use to print out numerous same character, last one mean should add space when finish print
 	for (int i = 0; i < sum; i++) {
 		cout << character;
@@ -73,14 +75,14 @@ void copy_character(string character, int sum, int space) {
 	}
 }
 void beginning_progress(int progress) {
+	//Made by 24127656A
 	cout << "\r|";
-
 	copy_character("*", progress, 0);
 	copy_character(" ", 100 - progress, 0);
-
 	cout << "| " << setw(3) << progress << "%";
 }
 void loading_animation() {
+	//Made by 24127656A
 	cout << "\r+";
 	for (int i = 0; i <= 100; i++) {
 		if (i == 2) {
@@ -104,6 +106,7 @@ void loading_animation() {
 }
 
 int returnCourse_information_collection_location(string code) {
+	//Made by 24127656A
 	// Q4 FUNCTION
 	for (int i = 0; i < course_information_collection.size(); i++) {
 		if (course_information_collection[i][0] == code) {
@@ -138,6 +141,7 @@ public:
 		year = y;
 	}
 	void setStudentID(string sid) {
+		S_ID = "";
 		S_ID = sid;
 	}
 
@@ -157,6 +161,7 @@ public:
 		return credits;
 	}
 	void printSortedSubjects() {
+		//Made by 24004908A
 		// 冒泡排序按科目代码排序
 		if (subject_information.size() <= 0) {
 			cout << "Code     Subject Title                          Grade  Credit\n";
@@ -195,6 +200,7 @@ public:
 		}
 	}
 	float calculateGPA() {
+		//Made by 24004908A
 		float total = 0.0;
 		int total_credit = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
@@ -221,6 +227,7 @@ public:
 		return (total_credit > 0) ? total / total_credit : 0.0;
 	}
 	void setSubject_information(const vector<vector<string>>& subject_i) {
+		//Made by 24127656A
 		// this is use to set value in the beginning
 		for (int i = 0; i < subject_i.size(); i++) {
 			// Ensure that subject_i[i] has at least 2 elements
@@ -235,11 +242,13 @@ public:
 		}
 	}
 	void addSubject_information(string subject_name, string subject_grade) {
+		//Made by 24127656A
 		int lastest_number = subject_information.size();
 		subject_information.push_back({ subject_name,subject_grade });
 	}
 
 	void changeSubject_information(string aim_subject, string change_subject, int code_or_grade) {
+		//Made by 24127656A
 		for (int i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][0] == aim_subject) {
 				subject_information[i][code_or_grade] = change_subject;
@@ -249,6 +258,7 @@ public:
 	}
 
 	void printData() {
+		//Made by 24004908A
 		cout << "student: " << name << " ID: " << S_ID << " Major: " << major << " Year: " << year;
 		if (GPA < 0.001)
 		{
@@ -260,6 +270,7 @@ public:
 	}
 
 	void copySubjectInformation(vector<vector<string>>& target) {
+		//Made by 24127656A
 		target.clear();  // clean aim target
 		for (const auto& row : subject_information) {
 			if (row.size() >= 2) {
@@ -268,6 +279,7 @@ public:
 		}
 	}
 	int returnSubject_information_exist(string check) {
+		//Made by 24127656A
 		for (int i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][0] == check) {
 				return i;
@@ -327,6 +339,7 @@ void showInfo() {
 }
 
 string name_upper(string name) {
+	//Made by 24127656A
 	bool space = false;
 	for (int i = 0; i < name.size(); i++) {
 		if (space == false) {
@@ -351,6 +364,7 @@ string name_upper(string name) {
 }
 
 string major_upper(string major) {
+	//Made by 24127656A
 	major[0] = toupper(major[0]);
 
 	for (int i = 1; i < major.size(); i++) {
@@ -422,9 +436,8 @@ void F1() {
 	cout << "Starting data loaded successfully!\n";
 }
 
-
-
 void F2() {
+	//Made by 24092222A
 	int sortChoice;
 	cout << "Choose sorting method:\n";
 	menu_word_output(1, "Sort by Name (Ascending)");
@@ -477,9 +490,8 @@ void F2() {
 	cout << endl;
 }
 
-
-
 void F3() {
+	// Made by 24037915A
 	string student_id;
 	bool exists = false;
 	int index = -1;
@@ -639,14 +651,8 @@ void F3() {
 	}
 }
 
-void copy_object_data(vector <Student_record> student_record_collection_oringinal) {
-	// this function use to copy obejct vector
-	for (int i = 0; i < student_record_collection.size(); i++) {
-		student_record_collection_oringinal.push_back(student_record_collection[i]);
-	}
-}
-
 void show_edited_information(string before, string current) {
+	//Made by 24127656A
 	//int margin = abs(current.size() - before.size());
 	cout << "Before" << setw(before.size() + 5) << "Current" << endl;
 	copy_character("-", before.size(), 0);
@@ -655,19 +661,8 @@ void show_edited_information(string before, string current) {
 	cout << before << " -> " << current << endl;
 };
 
-void prompt_change_student_information(string i, string p, string c, string confirma, string mission) {
-	cout << "The current " << mission << " of student" << "(" << i << ")" << " is :" << p << endl << endl;
-	cout << "Enter a new to the student " << "(" << i << "): ";
-	cin.ignore();
-	getline(cin, c);
-
-	cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-
-	cin >> confirma;
-	cout << endl;
-}
-
 bool returnMajor_information_collection_exist(string check) {
+	//Made by 24127656A
 	for (int i = 0; i < major_collection.size(); i++) {
 		if (major_collection[i] == check) {
 			return true;
@@ -677,6 +672,7 @@ bool returnMajor_information_collection_exist(string check) {
 }
 
 bool returnExist(string check, vector <vector <string>>list, int position) {
+	//Made by 24127656A
 	for (int i = 0; i < list.size(); i++) {
 		if (list[i][position] == check) {
 			return true;
@@ -686,10 +682,12 @@ bool returnExist(string check, vector <vector <string>>list, int position) {
 }
 
 void addCourse_information_collection(string code, string course_name, string credit) {
+	//Made by 24127656A
 	course_information_collection.push_back({ code,course_name,credit });
 }
 
 bool subject_code_valid_check(string code) {
+	//Made by 24127656A
 	int capital_letter = 0;
 	int number_digits = 0;
 
@@ -712,6 +710,7 @@ bool subject_code_valid_check(string code) {
 }
 
 void show_all_vector_information(vector<vector <string>> element, int space) {
+	//Made by 24127656A
 	for (int i = 0; i < element.size(); i++) {
 		for (int j = 0; j < element[i].size(); j++) {
 			cout << left << setw(space) << element[i][j];
@@ -720,13 +719,8 @@ void show_all_vector_information(vector<vector <string>> element, int space) {
 	}
 }
 
-//int returnMajor_By_number(int represent) {
-//	represent -= 1;
-//	for (int i = 0; i < major_collection.size(); i++) {
-//		if (i==represent)
-//	}
-//}
 void F4() {
+	//Made by 24127656A
 	string inputed_ID = "";
 	char option;
 	bool valid_SID = false;
@@ -814,9 +808,9 @@ void F4() {
 				cin.ignore();
 				cout << endl;
 
-				if (current_data.length() <= 3 && stoi(current_data)>=1 && stoi(current_data) <= major_collection.size()) { // input code
+				if (current_data.length() <= 3 && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
 					if (confirmation == "Y" || confirmation == "y") {
-						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data)-1]);
+						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data) - 1]);
 						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
 						cout << "The change is successfully." << endl;
 					}
@@ -995,6 +989,7 @@ void F4() {
 }
 
 void F5() {
+	//Made by 24004908A
 	string sid;
 	cout << "Enter Student ID: ";
 	cin >> sid;
@@ -1040,6 +1035,7 @@ void F5() {
 }
 
 void F6() {
+	//Made by 24004908A,24037915A
 	char confirm;
 	do {
 		cout << "Confirm exit (Y/N): ";
@@ -1059,6 +1055,7 @@ void F6() {
 }
 
 void F7() {
+	//Made by 24127656A
 	string sequence = "";
 	vector <vector <string>> major_ouput;
 	int sum = 0, order = 0;
