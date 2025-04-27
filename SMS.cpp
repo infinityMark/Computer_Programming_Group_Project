@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -590,7 +591,7 @@ void F3() {
 			}
 			menu_word_output(major_collection.size() + 1, "Create New Major");
 			cout << "Please type the Name/Number of Major. Also you can add a new Major.\n";
-			cout << "Major �]max 30 chars): ";
+			cout << "Major (max 30 chars): ";
 			getline(cin, major);
 			major = major_upper(major);
 			if (!(major.empty()) && major.length() <= 30) {
@@ -608,7 +609,7 @@ void F3() {
 				bool finds2 = false;
 				if (finds == false) {
 					cout << "Please input New Major Name One More Time \n";
-					cout << "New Major �]max 30 chars): ";
+					cout << "New Major (max 30 chars): ";
 					getline(cin, major);
 					major = major_upper(major);
 					for (size_t i = 0; i < major_collection.size(); i++) {
