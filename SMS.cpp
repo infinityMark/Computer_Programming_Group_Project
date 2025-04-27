@@ -178,7 +178,7 @@ public:
 					}
 				}
 			}
-			cout << "Code     Subject Title                          Grade  Credit\n";
+			cout << "Code     Subject Title                          Credit  Grade\n";
 			cout << "-------------------------------------------------------------\n";
 			for (size_t i = 0; i < subject_information.size(); i++) {
 				string code = subject_information[i][0];
@@ -198,8 +198,8 @@ public:
 				}
 				cout << left << setw(8) << code
 					<< " " << setw(40) << title
-					<< " " << setw(5) << grade
-					<< " " << credit << endl;
+					<< " " << setw(5) << credit
+					<< " " <<  grade << endl;
 			}
 			cout << "-------------------------------------------------------------\n";
 		}
