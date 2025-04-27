@@ -24,7 +24,6 @@ vector<vector <string>> course_information_collection = {
 	{"ENG2250", "Engineering Mathematics", "3"},
 	{"ENG2041", "Applied Computing", "3"},
 	{"BUS1021", "Personal Financial Planning", "3"},
-	{"BUS1021", "Personal Financial Planning", "3"},
 	{"BUS2002", "Introduction to Economics", "3"},
 	{"BUS3006", "Understanding Globalization", "3"},
 	{"BUS4510", "Business Project Management", "4"},
@@ -655,7 +654,7 @@ void F3() {
 void show_edited_information(string before, string current) {
 	//Made by 24127656A
 	//int margin = abs(current.size() - before.size());
-	cout << "Before" << setw(before.size() + 5) << "Current" << endl;
+	cout << "Before" << setw(before.length() + 5) << "Current" << endl;
 	copy_character("-", before.size(), 0);
 	cout << setw(5);
 	copy_character("-", current.size(), 1);
@@ -718,6 +717,15 @@ void show_all_vector_information(vector<vector <string>> element, int space) {
 		}
 		cout << endl;
 	}
+}
+
+bool check_current_data_isCode(string check) {
+	for (int i = 0; i < check.length(); i++) {
+		if (!(check[i] >= '0' && check[i] <= '9')) {
+			return false;
+		}
+	}
+	return true;
 }
 
 void F4() {
@@ -815,7 +823,7 @@ void F4() {
 				cin.ignore();
 				cout << endl;
 
-				if (current_data <"a" && current_data > "Z" && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
+				if (check_current_data_isCode(current_data) ==true && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
 					if (confirmation == "Y" || confirmation == "y") {
 						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data) - 1]);
 						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
@@ -854,6 +862,7 @@ void F4() {
 				trial_time = 0;
 				cout << endl;
 				menu_word_output(-1, "All subject provided");
+				show_all_vector_information(course_information_collection, 40);
 				cout << "Which subject do you want to change" << endl;
 				do {
 					cout << "Enter subject code: " << endl << endl;
@@ -948,7 +957,6 @@ void F4() {
 								current_data = major_upper(current_data);
 								addCourse_information_collection(previous_data, current_data, temp);
 								//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-
 								menu_word_output(-1, "The subject is going to add into the student's subject lists");
 								menu_word_output(-1, "Please input the subject's grade to the student:");
 								getline(cin, current_data);
@@ -976,7 +984,7 @@ void F4() {
 				break;
 			case '4':
 				cout << "You are returing to the Main Menu." << endl;
-				//loading_animation();
+				loading_animation();
 				break;
 			case '5':
 				show_all_vector_information(course_information_collection, 40);
