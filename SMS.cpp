@@ -1054,7 +1054,7 @@ int main() {
 	char prog_choice;
 	bool loading_data = false;
 
-	//loading_animation();
+	loading_animation();
 
 	menu_word_output(-1, "Welcome to use Student Management System");
 
