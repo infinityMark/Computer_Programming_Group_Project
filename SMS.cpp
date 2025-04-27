@@ -161,7 +161,7 @@ public:
 		return credits;
 	}
 	void printSortedSubjects() {
-		const int TITLE_MAX_WIDTH = 40;
+		const int TITLE_MAX_WIDTH = 30;
 		//Made by 24004908A
 		// 冒泡排序按科目代码排序
 		if (subject_information.size() <= 0) {
@@ -193,7 +193,7 @@ public:
 					}
 				}
 				if (title.length() > TITLE_MAX_WIDTH) {
-					title = title.substr(0, TITLE_MAX_WIDTH);
+					title = title.substr(0, TITLE_MAX_WIDTH) + "...";
 				}
 				cout << left << setw(8) << code
 					<< " " << setw(40) << title
@@ -330,7 +330,7 @@ void showInfo() {
 		{"YIM Chun Hei","24004908A","B07A"},
 		{"MING Tsz Ching","24052040A","B07B"},
 		{"Sze To Siu Lung", "24092222A", "B07B"},
-		{"LEUNG Hon Hin", "24010190A", "B07A"}
+		{"LEUNG Hon Hin", "24XXXXXXA", "B07A"}
 	};
 	menu_word_output(-1, "Group Number: 7");
 	cout << endl;
@@ -383,7 +383,6 @@ string major_upper(string major) {
 }
 
 void F1() {
-	//Made by 24010190A
 	student_record_collection.clear();
 
 	Student_record chan;
@@ -585,8 +584,9 @@ void F3() {
 		valid = false;
 		while (retries < 3) {
 			for (size_t i = 0; i < major_collection.size(); i++) {
+				{
 					menu_word_output(i + 1, major_collection[i]);
-							
+				}
 			}
 			menu_word_output(major_collection.size() + 1, "Create new major");
 			cout << "Please type the Major Name. Also you can add a new Major \n";
@@ -594,19 +594,19 @@ void F3() {
 			getline(cin, major);
 			major = major_upper(major);
 			if (!(major.empty()) && major.length() <= 30) {
-				bool finds = false;
-				for (size_t i = 0; i < major_collection.size(); i++) {
-					if (major == major_collection[i] || (major == to_string(i+1))) {
-						major = major_collection[i];
-						finds = true;
-						if (finds == true)
-							break;
-					}
+				if (major == "Information Engineering") {
+					major = "Information Engineering";
 				}
-				if (finds == false) {
-					cout << "Please input New Major One More Time: ";
-					getline(cin, major);
-					major = major_upper(major);
+				else if (major_upper(major) == "Civil Engineering") {
+					major = "Civil Engineering";
+				}
+				else if (major_upper(major) == "Global Business") {
+					major = "Gobal Business";
+				}
+				else if (major_upper(major) == "Educational Psychology") {
+					major = "Educational Psychology";
+				}
+				else {
 					major_collection.push_back(major_upper(major));
 					cout << "New major added successfully.\n";
 				}
@@ -743,6 +743,7 @@ void show_all_vector_information(vector<vector <string>> element, int space) {
 }
 
 bool check_current_data_isCode(string check) {
+	//Made by 24127656A
 	if (check.empty()) {
 		return false;
 	}
