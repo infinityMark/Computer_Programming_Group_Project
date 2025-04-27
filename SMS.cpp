@@ -1,4 +1,4 @@
-#include <iostream>
+	#include <iostream>
 #include <iomanip>
 #include <string>
 #include <windows.h>
@@ -504,15 +504,18 @@ void F3() {
 		cout << endl;
 
 		char confirm;
-		cout << "Confirm deletion (Yes/No): ";
+		cout << "Confirm deletion (Yes/No) for Yes input Y/y. for No input N/n: ";
 		cin >> confirm;
-
+		cin.ignore();
 		if (toupper(confirm) == 'Y') {
 			student_record_collection.erase(student_record_collection.begin() + index);
 			cout << "Student deleted successfully." << endl;
 		}
-		else {
+		else if (toupper(confirm) == 'N') {
 			cout << "Deletion canceled." << endl;
+		}
+		else {
+			cout << "Invalid Input. Deletion canceled." << endl;
 		}
 	}
 	else {
@@ -631,7 +634,8 @@ void F3() {
 
 		cout << "Student added successfully.  " << "New student's ID for " << name << ": " << generated_id << " Year: " << year << endl;
 		cout << "completed student Record: \n";
-		cout << "Name: " << name << "\nMajor" << major << " \nStudent ID: " << generated_id << "  \nYear: " << year << endl;
+
+		cout << "Name: " << name << "\nMajor" << major << "\nStudent ID: " << generated_id << " \nYear: " << year << endl;
 	}
 }
 
