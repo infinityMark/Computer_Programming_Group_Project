@@ -326,7 +326,7 @@ void showInfo() {
 		{"YIM Chun Hei","24004908A","B07A"},
 		{"MING Tsz Ching","24052040A","B07B"},
 		{"Sze To Siu Lung", "24092222A", "B07B"},
-		{"LEUNG Hon Hin", "24XXXXXXA", "B07A"}
+		{"LEUNG Hon Hin", "24010190A", "B07A"}
 	};
 	menu_word_output(-1, "Group Number: 7");
 	cout << endl;
@@ -379,6 +379,7 @@ string major_upper(string major) {
 }
 
 void F1() {
+	//Made by 24010190A
 	student_record_collection.clear();
 
 	Student_record chan;
@@ -580,29 +581,28 @@ void F3() {
 		valid = false;
 		while (retries < 3) {
 			for (size_t i = 0; i < major_collection.size(); i++) {
-				{
 					menu_word_output(i + 1, major_collection[i]);
-				}
+							
 			}
-			cout << "[5] ________________\n";
+			cout << "New Major: ________________\n";
 			cout << "Please type the Major Name. Also you can add a new Major \n";
 			cout << "Major: ";
 			getline(cin, major);
 			major = major_upper(major);
 			if (!(major.empty()) && major.length() <= 30) {
-				if (major == "Information Engineering") {
-					major = "Information Engineering";
+				bool finds = false;
+				for (size_t i = 0; i < major_collection.size(); i++) {
+					if (major == major_collection[i] || (major == to_string(i+1))) {
+						major = major_collection[i];
+						finds = true;
+						if (finds == true)
+							break;
+					}
 				}
-				else if (major_upper(major) == "Civil Engineering") {
-					major = "Civil Engineering";
-				}
-				else if (major_upper(major) == "Global Business") {
-					major = "Gobal Business";
-				}
-				else if (major_upper(major) == "Educational Psychology") {
-					major = "Educational Psychology";
-				}
-				else {
+				if (finds == false) {
+					cout << "Please input New Major One More Time: ";
+					getline(cin, major);
+					major = major_upper(major);
 					major_collection.push_back(major_upper(major));
 					cout << "New major added successfully.\n";
 				}
@@ -1068,7 +1068,7 @@ void F6() {
 	} while (toupper(confirm) != 'Y' && toupper(confirm) != 'N');
 	if (toupper(confirm) == 'Y') {
 		cout << "Group 7 Members:\n";
-		cout << "Name: LEUNG Hon Hin,   ID: 24XXXXXXA, Tutorial Group: B07A\n";
+		cout << "Name: LEUNG Hon Hin,   ID: 24010190A, Tutorial Group: B07A\n";
 		cout << "Name: MING Tsz Ching,  ID: 24052040A, Tutorial Group: B07B\n";
 		cout << "Name: HUANG Haixiang,  ID: 24037915A, Tutorial Group: B07A\n";
 		cout << "Name: WU Jiacheng,     ID: 24127656A, Tutorial Group: B07A\n";
