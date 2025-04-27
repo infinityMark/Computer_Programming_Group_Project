@@ -588,7 +588,7 @@ void F3() {
 					menu_word_output(i + 1, major_collection[i]);
 				}
 			}
-			cout << "[5] ________________\n";
+			menu_word_output(major_collection.size() + 1, "Create new major");
 			cout << "Please type the Major Name. Also you can add a new Major \n";
 			cout << "Major: ";
 			getline(cin, major);
@@ -1102,7 +1102,7 @@ void F6() {
 	} while (toupper(confirm) != 'Y' && toupper(confirm) != 'N');
 	if (toupper(confirm) == 'Y') {
 		cout << "Group 7 Members:\n";
-		cout << "Name: LEUNG Hon Hin,   ID: 24XXXXXXA, Tutorial Group: B07A\n";
+		cout << "Name: LEUNG Hon Hin,   ID: 24010190A, Tutorial Group: B07A\n";
 		cout << "Name: MING Tsz Ching,  ID: 24052040A, Tutorial Group: B07B\n";
 		cout << "Name: HUANG Haixiang,  ID: 24037915A, Tutorial Group: B07A\n";
 		cout << "Name: WU Jiacheng,     ID: 24127656A, Tutorial Group: B07A\n";
@@ -1129,7 +1129,6 @@ void F7() {
 		}
 		major_ouput.push_back({ major_collection[i],to_string(sum) });
 	}
-
 	show_all_vector_information(major_ouput, 30);
 }
 
