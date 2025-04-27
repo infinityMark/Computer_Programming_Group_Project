@@ -200,7 +200,7 @@ public:
 		for (size_t i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][1] == "--") continue;
 			// 获取绩点
-			float  point = 0.0;
+			float point = 0.0;
 			for (size_t j = 0; j < grade_point_collection.size(); j++) {
 				if (grade_point_collection[j][0] == subject_information[i][1]) {
 					point = atof(grade_point_collection[j][1].c_str());
@@ -311,7 +311,9 @@ void showInfo() {
 	vector<vector <string>> student_info = {
 		{"WU Jiacheng","24127656A","B07A"},
 		{"HUANG Haixiang","24037915A","B07A"},
-		{"YIM Chun Hei","24004908A","B07A"}
+		{"YIM Chun Hei","24004908A","B07A"},
+		{"MING Tsz Ching","24052040A","B07B"},
+		{"Sze To Siu Lung", "24092222A", "B07B"}
 	};
 	menu_word_output(-1, "Group Number: 7");
 	cout << endl;
@@ -626,7 +628,9 @@ void F3() {
 		new_student.setGPA(0.0); // GPA calculated later
 		student_record_collection.push_back(new_student);
 
-		cout << "Student added successfully.  "<< name << "'s Student ID: " << generated_id << "  Year" <<year << endl;
+		cout << "Student added successfully.  " << "New student's ID for " << name << ": " << generated_id << "Year: " << year << endl;
+		cout << "completed student Record: \n";
+		cout << "Name: " << name << "Major" << major << " Student ID: " << generated_id << "  Year: " << year << endl;
 	}
 }
 
@@ -765,6 +769,7 @@ void F4() {
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
 				cin >> confirmation;
+				cin.ignore();
 				cout << endl << endl;
 
 				if (confirmation == "Y" || confirmation == "y") {
@@ -792,6 +797,7 @@ void F4() {
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 
 				cin >> confirmation;
+				cin.ignore();
 				cout << endl;
 
 				if (confirmation == "Y" || confirmation == "y") {
@@ -853,6 +859,8 @@ void F4() {
 								if (confirmation == "Y" || confirmation == "y") {
 									current_data = name_upper(current_data);
 									student_record_collection[direct_object_location].changeSubject_information(previous_data, current_data, 1);
+									float new_gpa = student_record_collection[direct_object_location].calculateGPA();
+									student_record_collection[direct_object_location].setGPA(new_gpa);
 									cout << "The change is successfully." << endl;
 								}
 								else if (confirmation == "N" || confirmation == "n") {
@@ -871,11 +879,11 @@ void F4() {
 						// 2nd case
 						menu_word_output(-1, "The subject is going to add into the student's subject lists");
 						menu_word_output(-1, "Please input the subject's grade:");
-						cin.ignore();
 						getline(cin, current_data);
 
 						cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
 						cin >> confirmation;
+						cin.ignore();
 						cout << endl;
 
 						if (confirmation == "Y" || confirmation == "y") {
@@ -1010,9 +1018,13 @@ void F6() {
 		cin.ignore();
 	} while (toupper(confirm) != 'Y' && toupper(confirm) != 'N');
 	if (toupper(confirm) == 'Y') {
-		cout << "Group Members:\n";
-		cout << "Name: John DOE, ID: S123456, Tutorial Group: A\n";
-		cout << "Name: Jane SMITH, ID: S123457, Tutorial Group: A\n";
+		cout << "Group 7 Members:\n";
+		cout << "Name: ,    ID: , Tutorial Group: \n";
+		cout << "Name: MING Tsz Ching,  ID: 24052040A, Tutorial Group: B07B\n";
+		cout << "Name: HUANG Haixiang,  ID: 24037915A, Tutorial Group: B07A\n";
+		cout << "Name: WU Jiacheng,     ID: 24127656A, Tutorial Group: B07A\n";
+		cout << "Name: YIM Chun Hei,    ID: 24004908A, Tutorial Group: B07A\n";
+		cout << "Name: Sze To Siu Lung, ID: 24092222A, Tutorial Group: B07B\n";
 		exit(0);
 	}
 }
