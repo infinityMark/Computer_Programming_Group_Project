@@ -28,7 +28,6 @@ vector<vector <string>> course_information_collection = {
 	{"BUS3006", "Understanding Globalization", "3"},
 	{"BUS4510", "Business Project Management", "4"},
 	{"BUS5523", "Final Year Project", "5"},
-	{"LCH1019", "Japanese I", "2"},
 	{"PSY1234", "Introduction to Psychology", "2"},
 	{"PSY2233", "Sociology", "3"},
 	{"PSY2190", "Human Behavior", "3"}
@@ -146,12 +145,11 @@ public:
 	}
 
 	int calculateCredits() {
-		//Made by 24004908A
 		int credits = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][1] == "--" || subject_information[i][1] == "F")
 				continue;
-			// Find Course Credits
+			// 查找课程学分
 			for (size_t j = 0; j < course_information_collection.size(); j++) {
 				if (course_information_collection[j][0] == subject_information[i][0]) {
 					credits += atoi(course_information_collection[j][2].c_str());
@@ -162,9 +160,9 @@ public:
 		return credits;
 	}
 	void printSortedSubjects() {
+		const int TITLE_MAX_WIDTH = 30;
 		//Made by 24004908A
-		const int TITLE_MAX_WIDTH = 40;
-		// Sort by subject code
+		// 冒泡排序按科目代码排序
 		if (subject_information.size() <= 0) {
 			cout << "Code     Subject Title                          Grade  Credit\n";
 			cout << "-------------------------------------------------------------\n";
@@ -178,14 +176,14 @@ public:
 					}
 				}
 			}
-			cout << "Code     Subject Title                          Credit  Grade\n";
+			cout << "Code     Subject Title                          Grade  Credit\n";
 			cout << "-------------------------------------------------------------\n";
 			for (size_t i = 0; i < subject_information.size(); i++) {
 				string code = subject_information[i][0];
 				string grade = subject_information[i][1];
 				string title = "";
 				string credit = "";
-				// Find course information
+				// 查找课程信息
 				for (size_t j = 0; j < course_information_collection.size(); j++) {
 					if (course_information_collection[j][0] == code) {
 						title = course_information_collection[j][1];
@@ -194,12 +192,12 @@ public:
 					}
 				}
 				if (title.length() > TITLE_MAX_WIDTH) {
-					title = title.substr(0, TITLE_MAX_WIDTH);
+					title = title.substr(0, TITLE_MAX_WIDTH) + "...";
 				}
 				cout << left << setw(8) << code
 					<< " " << setw(40) << title
-					<< " " << setw(5) << credit
-					<< " " <<  grade << endl;
+					<< " " << setw(5) << grade
+					<< " " << credit << endl;
 			}
 			cout << "-------------------------------------------------------------\n";
 		}
@@ -210,7 +208,7 @@ public:
 		int total_credit = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][1] == "--") continue;
-			// Get GPA
+			// 获取绩点
 			float point = 0.0;
 			for (size_t j = 0; j < grade_point_collection.size(); j++) {
 				if (grade_point_collection[j][0] == subject_information[i][1]) {
@@ -218,7 +216,7 @@ public:
 					break;
 				}
 			}
-			// Get credits
+			// 获取学分
 			int credit = 0;
 			for (size_t j = 0; j < course_information_collection.size(); j++) {
 				if (course_information_collection[j][0] == subject_information[i][0]) {
@@ -263,6 +261,7 @@ public:
 	}
 
 	void printData() {
+		//Made by 24004908A
 		cout << "student: " << name << " ID: " << S_ID << " Major: " << major << " Year: " << year;
 		if (GPA < 0.001)
 		{
@@ -1109,7 +1108,7 @@ void F5() {
 	sid[0] = toupper(sid[0]);
 	cin.ignore();
 
-	// Find students
+	// 查找学生
 	int index = -1;
 	for (size_t i = 0; i < student_record_collection.size(); i++) {
 		if (student_record_collection[i].getS_ID() == sid) {
@@ -1125,16 +1124,16 @@ void F5() {
 
 	Student_record s = student_record_collection[index];
 
-	// Print header information
+	// 打印头部信息
 	cout << "\nName: " << s.getName() << endl
 		<< "Student ID: " << sid << endl
 		<< "Major: " << s.getMajor() << endl
 		<< "Year: " << s.getYear() << endl;
 
-	// Print sorted subjects
+	// 打印排序后的科目
 	s.printSortedSubjects();
 
-	// Calculating credits and GPA
+	// 计算学分和GPA
 	int credits = s.calculateCredits();
 	float gpa = s.calculateGPA();
 
