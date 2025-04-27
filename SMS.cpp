@@ -788,6 +788,7 @@ void printMajor_Provided(string p_d) {
 }
 
 void printSubjectTaking(vector <vector<string>>all_course, vector <vector<string>>course_taking) {
+	//Made by 24127656A
 	if (course_taking.size() <= 0) {
 		show_all_vector_information(all_course);
 	}
@@ -978,7 +979,9 @@ void F4() {
 				menu_word_output(-1, "All subject provided:");
 				printSubjectTaking(course_information_collection, student_record_collection[direct_object_location].getSubject_information());
 				copy_character("-", 10, 1);
-				cout << "Which subject do you want to change" << endl;
+				cout << "Which subject do you want to change or add" << endl;
+				menu_word_output(-1, "Input subject code that student does not have the subject will add to the student's data.");
+				menu_word_output(-1, "Input a subject code that is not inside the subject provided, then the code will be a new subject and added to the system.");
 				do {
 					cout << "Enter subject code: " << endl << endl;
 					getline(cin, previous_data); // the subject name or code the user want to change
@@ -1059,7 +1062,7 @@ void F4() {
 					else {
 						// 3rd case
 						string temp = "";
-						menu_word_output(-1, "The subject is going to add into the student's subject lists");
+						menu_word_output(-1, "The subject is going to add into the student's subject lists and subject system");
 						menu_word_output(-1, "Please input the new subject's title");
 						getline(cin, current_data);
 						menu_word_output(-1, "Please input the new subject's credit:");
@@ -1111,6 +1114,7 @@ void F4() {
 				loading_animation();
 				break;
 			case '5':
+				menu_word_output(-1, "Subject information:");
 				show_all_vector_information(course_information_collection);
 				break;
 			case '6':
@@ -1190,6 +1194,7 @@ void F6() {
 		cout << "Name: WU Jiacheng,     ID: 24127656A, Tutorial Group: B07A\n";
 		cout << "Name: YIM Chun Hei,    ID: 24004908A, Tutorial Group: B07A\n";
 		cout << "Name: Sze To Siu Lung, ID: 24092222A, Tutorial Group: B07B\n";
+		cout << "\nThe Student Management System terminates. Have a good day!  \v:)" << endl;
 		exit(0);
 	}
 }
@@ -1215,6 +1220,7 @@ void F7() {
 }
 
 int main() {
+	//Made by 24127656A
 	char prog_choice;
 	bool loading_data = false;
 
@@ -1234,7 +1240,6 @@ int main() {
 		menu_word_output(7, "Show total number of people in different major");
 		copy_character("*", 21, 1);
 		cout << endl;
-		//cout << "Option (1 - 7):" << endl;
 
 		cout << "Enter function option number (1 - 7): ";
 		cin >> prog_choice;
