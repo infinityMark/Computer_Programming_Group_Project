@@ -146,6 +146,7 @@ public:
 	}
 
 	int calculateCredits() {
+		//Made by 24004908A
 		int credits = 0;
 		for (size_t i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][1] == "--" || subject_information[i][1] == "F")
@@ -161,8 +162,8 @@ public:
 		return credits;
 	}
 	void printSortedSubjects() {
-		const int TITLE_MAX_WIDTH = 40;
 		//Made by 24004908A
+		const int TITLE_MAX_WIDTH = 40;
 		// Sort by subject code
 		if (subject_information.size() <= 0) {
 			cout << "Code     Subject Title                          Grade  Credit\n";
@@ -262,7 +263,6 @@ public:
 	}
 
 	void printData() {
-		//Made by 24004908A
 		cout << "student: " << name << " ID: " << S_ID << " Major: " << major << " Year: " << year;
 		if (GPA < 0.001)
 		{
