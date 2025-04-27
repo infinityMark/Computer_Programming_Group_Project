@@ -255,7 +255,7 @@ public:
 			cout << " GPA: N/A";
 		}
 		else {
-			cout <<" GPA: " << fixed << setprecision(2) << GPA;
+			cout << " GPA: " << fixed << setprecision(2) << GPA;
 		}
 	}
 
@@ -444,12 +444,12 @@ void F2() {
 	if (sortChoice == 1) {
 		sort(sortedStudents.begin(), sortedStudents.end(), [](const Student_record& a, const Student_record& b) {
 			return a.getName() < b.getName();
-		});
+			});
 	}
 	else {
 		sort(sortedStudents.begin(), sortedStudents.end(), [](const Student_record& a, const Student_record& b) {
 			return a.getGPA() > b.getGPA();
-		});
+			});
 	}
 
 	// Display table header
@@ -631,7 +631,7 @@ void F3() {
 
 		cout << "Student added successfully.  " << "New student's ID for " << name << ": " << generated_id << " Year: " << year << endl;
 		cout << "completed student Record: \n";
-		cout << "Name: " << name << "Major" << major << " Student ID: " << generated_id << "  Year: " << year << endl;
+		cout << "Name: " << name << "\nMajor" << major << " \nStudent ID: " << generated_id << "  \nYear: " << year << endl;
 	}
 }
 
@@ -716,6 +716,12 @@ void show_all_vector_information(vector<vector <string>> element, int space) {
 	}
 }
 
+//int returnMajor_By_number(int represent) {
+//	represent -= 1;
+//	for (int i = 0; i < major_collection.size(); i++) {
+//		if (i==represent)
+//	}
+//}
 void F4() {
 	string inputed_ID = "";
 	char option;
@@ -759,7 +765,7 @@ void F4() {
 			cout << "\n\n";
 
 			switch (option) {
-			case '1':
+			case '1': // edit name
 				previous_data = student_record_collection[direct_object_location].getName();
 				cout << "The current name of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
 				copy_character("-", previous_data.length(), 1);
@@ -787,12 +793,15 @@ void F4() {
 				}
 				cout << endl;
 				break;
-			case '2':
+			case '2': // edit major
 				previous_data = student_record_collection[direct_object_location].getMajor();
 				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
-				cout << "Enter a new major to the student " << "(" << inputed_ID << "): ";
+				for (int i = 0; i < major_collection.size(); i++) {
+					menu_word_output(i + 1, major_collection[i]);
+				}
+				cout << "Enter a new major to the student " << "(" << inputed_ID << "), you may input relevant number or full name: ";
 				getline(cin, current_data);
 
 				cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
@@ -801,22 +810,37 @@ void F4() {
 				cin.ignore();
 				cout << endl;
 
-				if (confirmation == "Y" || confirmation == "y") {
-					current_data = major_upper(current_data);
-					if (returnMajor_information_collection_exist(current_data)) {
-						student_record_collection[direct_object_location].setMajor(current_data);
+				if (current_data.length() <= 3 && stoi(current_data)>=1 && stoi(current_data) <= major_collection.size()) { // input code
+					if (confirmation == "Y" || confirmation == "y") {
+						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data)-1]);
 						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
 						cout << "The change is successfully." << endl;
 					}
+					else if (confirmation == "N" || confirmation == "n") {
+						cout << "The change is readly withdraw." << endl;
+					}
 					else {
-						menu_word_output(-1, "No such Major!");
+						cout << "Invalid input!";
 					}
 				}
-				else if (confirmation == "N" || confirmation == "n") {
-					cout << "The change is readly withdraw." << endl;
-				}
 				else {
-					cout << "Invalid input!";
+					if (confirmation == "Y" || confirmation == "y") {
+						current_data = major_upper(current_data);
+						if (returnMajor_information_collection_exist(current_data)) {
+							student_record_collection[direct_object_location].setMajor(current_data);
+							show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+							cout << "The change is successfully." << endl;
+						}
+						else {
+							menu_word_output(-1, "No such Major!");
+						}
+					}
+					else if (confirmation == "N" || confirmation == "n") {
+						cout << "The change is readly withdraw." << endl;
+					}
+					else {
+						cout << "Invalid input!";
+					}
 				}
 				break;
 			case '3':
