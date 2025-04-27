@@ -17,7 +17,7 @@ the data store like below:
 {"Subject Code","Subject Name","Credit"}
 */
 vector<vector <string>> course_information_collection = {
-	{"ENG2042","Introduction to C++","3"},
+	{"ENG2042", "Introduction to C++","3"},
 	{"ENG2219", "Signal Processing", "3"},
 	{"LCH1302", "Professional English Writing", "2"},
 	{"LCH1019", "Japanese I", "2"},
@@ -840,21 +840,19 @@ void printSubjectTaking(vector <vector<string>>all_course, vector <vector<string
 	}
 }
 
-bool current_data_valid(string check) {
-	if (check.empty()) {
+bool current_data_valid(const std::string& name) {
+	if (name.empty()) {
 		return false;
 	}
-	else {
-		for (int i = 1; i < check.length(); i++) {
-			if (check[i] >= 'a' && check[i] <= 'Z') {
-				continue;
-			}
-			else {
-				return false;
-			}
+
+	for (char c : name) {
+		if (!((c >= 'a' && c <= 'z') ||
+			(c >= 'A' && c <= 'Z') ||
+			(c == ' '))) {
+			return false;
 		}
-		return true;
 	}
+	return true;
 }
 
 void F4() {
@@ -1139,7 +1137,7 @@ void F4() {
 				break;
 			case '4':
 				cout << "You are returing to the Main Menu." << endl;
-				loading_animation();
+				//loading_animation();
 				break;
 			case '5':
 				menu_word_output(-1, "Subject information:");
@@ -1252,7 +1250,7 @@ int main() {
 	char prog_choice;
 	bool loading_data = false;
 
-	loading_animation();
+	//loading_animation();
 
 	menu_word_output(-1, "Welcome to use Student Management System");
 
