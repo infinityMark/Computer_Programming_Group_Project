@@ -43,7 +43,7 @@ vector<vector <string>> grade_point_collection = {
 	{"B+","3.3"}, {"B","3.0"}, {"B-","2.7"},
 	{"C+","2.3"}, {"C","2.0"}, {"C-","1.7"},
 	{"D+","1.3"}, {"D","1.0"}, {"F","0.0"},
-	{"--","0.0"}
+	{"--"}
 };
 
 vector <string> major_collection = {
@@ -590,7 +590,7 @@ void F3() {
 			}
 			menu_word_output(major_collection.size() + 1, "Create New Major");
 			cout << "Please type the Name/Number of Major. Also you can add a new Major.\n";
-			cout << "Major ¡]max 30 chars): ";
+			cout << "Major ï¿½]max 30 chars): ";
 			getline(cin, major);
 			major = major_upper(major);
 			if (!(major.empty()) && major.length() <= 30) {
@@ -608,7 +608,7 @@ void F3() {
 				bool finds2 = false;
 				if (finds == false) {
 					cout << "Please input New Major Name One More Time \n";
-					cout << "New Major ¡]max 30 chars): ";
+					cout << "New Major ï¿½]max 30 chars): ";
 					getline(cin, major);
 					major = major_upper(major);
 					for (size_t i = 0; i < major_collection.size(); i++) {
@@ -675,6 +675,9 @@ void show_edited_information(string before, string current) {
 	int width = max(before.size(), current.size()) + 5;
 	if (current.length() > before.length()) {
 		width -= 6;
+	}
+	else if (current.length() == before.length()) {
+		width = before.length() + 5;
 	}
 	cout << "Before" << setw(width) << "Current" << endl;
 	copy_character("-", before.size(), 0);
@@ -824,7 +827,7 @@ void printSubjectTaking(vector <vector<string>>all_course, vector <vector<string
 				if (extra_space > 0) cout << setw(extra_space) << "   ";
 			}
 			else {
-				cout << setw(14+2) << " ";
+				cout << setw(14 + 2) << " ";
 			}
 
 			for (int j = 1; j < all_course[i].size(); j++) {
@@ -911,7 +914,8 @@ void F4() {
 				previous_data = student_record_collection[direct_object_location].getMajor();
 				cout << "The current major of student" << "(" << inputed_ID << ")" << " is :" << endl << endl << previous_data << endl;
 				copy_character("-", previous_data.length(), 1);
-				cout << endl;
+				cout << endl << endl;
+				menu_word_output(-1, "Majors provided");
 				printMajor_Provided(previous_data);
 				copy_character("-", 10, 1);
 				cout << "Enter a new major to the student " << "(" << inputed_ID << "), you may input relevant number or full name: ";
@@ -925,9 +929,14 @@ void F4() {
 
 				if (check_current_data_isCode(current_data) == true && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
 					if (confirmation == "Y" || confirmation == "y") {
-						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data) - 1]);
-						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-						cout << "The change is successfully." << endl;
+						if (previous_data == major_collection[stoi(current_data) - 1]) {
+							menu_word_output(-1, "Same major!");
+						}
+						else {
+							student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data) - 1]);
+							show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+							cout << "The change is successfully." << endl;
+						}
 					}
 					else if (confirmation == "N" || confirmation == "n") {
 						cout << "The change is readly withdraw." << endl;
@@ -939,13 +948,18 @@ void F4() {
 				else {
 					if (confirmation == "Y" || confirmation == "y") {
 						current_data = major_upper(current_data);
-						if (returnMajor_information_collection_exist(current_data) == true) {
-							student_record_collection[direct_object_location].setMajor(current_data);
-							show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-							cout << "The change is successfully." << endl;
+						if (previous_data == current_data) {
+							menu_word_output(-1, "Same major!");
 						}
 						else {
-							menu_word_output(-1, "No such Major!");
+							if (returnMajor_information_collection_exist(current_data) == true) {
+								student_record_collection[direct_object_location].setMajor(current_data);
+								show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+								cout << "The change is successfully." << endl;
+							}
+							else {
+								menu_word_output(-1, "No such Major!");
+							}
 						}
 					}
 					else if (confirmation == "N" || confirmation == "n") {
