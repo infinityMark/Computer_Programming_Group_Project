@@ -200,7 +200,7 @@ public:
 		for (size_t i = 0; i < subject_information.size(); i++) {
 			if (subject_information[i][1] == "--") continue;
 			// 获取绩点
-			float point = 0.0;
+			float  point = 0.0;
 			for (size_t j = 0; j < grade_point_collection.size(); j++) {
 				if (grade_point_collection[j][0] == subject_information[i][1]) {
 					point = atof(grade_point_collection[j][1].c_str());
