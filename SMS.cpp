@@ -291,6 +291,9 @@ public:
 		}
 		return -1;
 	}
+	vector<vector <string>>getSubject_information() {
+		return subject_information;
+	}
 	string getSubject_grade(string code) {
 		return subject_information[returnSubject_information_exist(code)][1];
 	}
@@ -715,7 +718,7 @@ bool subject_code_valid_check(string code) {
 	}
 }
 
-void show_all_vector_information(vector<vector <string>> element, int space) {
+void show_all_vector_information(vector<vector <string>> element) {
 	//Made by 24127656A
 	// First, find the maximum width for each column
 	vector<size_t> column_widths(element[0].size(), 0); // Initialize with 0 for each column
@@ -764,6 +767,57 @@ void printMajor_Provided(string p_d) {
 		}
 		else {
 			menu_word_output(i + 1, major_collection[i]);
+		}
+	}
+}
+
+void printSubjectTaking(vector <vector<string>>all_course, vector <vector<string>>course_taking) {
+	if (course_taking.size() <= 0) {
+		show_all_vector_information(all_course);
+	}
+	else {
+		vector<size_t> column_widths(all_course[0].size(), 0); // Initialize with 0 for each column
+
+		for (int i = 0; i < all_course.size(); i++) {
+			for (int j = 0; j < all_course[i].size(); j++) {
+				if (all_course[i][j].length() > column_widths[j]) {
+					column_widths[j] = all_course[i][j].length();
+				}
+			}
+		}
+
+		// Add some padding (e.g., 2 extra spaces) for better readability
+		for (auto& width : column_widths) {
+			width += 2;
+		}
+
+		// Then print using the calculated widths
+		for (int i = 0; i < all_course.size(); i++) {
+			bool is_taking = false;
+			if (!all_course[i].empty()) {
+				for (int x = 0; x < course_taking.size(); x++) {
+					if (!course_taking[x].empty() && all_course[i][0] == course_taking[x][0]) {
+						is_taking = true;
+						break;
+					}
+				}
+			}
+
+			cout << left << setw(column_widths[0] + 4) << all_course[i][0];
+
+			if (is_taking) {
+				cout << "<- is taking";
+				int extra_space = (column_widths[0] + 7) - all_course[i][0].length() - 5;
+				if (extra_space > 0) cout << setw(extra_space) << "   ";
+			}
+			else {
+				cout << setw(14+2) << " ";
+			}
+
+			for (int j = 1; j < all_course[i].size(); j++) {
+				cout << left << setw(column_widths[j] + 4) << all_course[i][j];
+			}
+			cout << endl;
 		}
 	}
 }
@@ -895,7 +949,7 @@ void F4() {
 				trial_time = 0;
 				cout << endl;
 				menu_word_output(-1, "All subject provided:");
-				show_all_vector_information(course_information_collection, 40);
+				printSubjectTaking(course_information_collection, student_record_collection[direct_object_location].getSubject_information());
 				copy_character("-", 10, 1);
 				cout << "Which subject do you want to change" << endl;
 				do {
@@ -1030,11 +1084,11 @@ void F4() {
 				loading_animation();
 				break;
 			case '5':
-				show_all_vector_information(course_information_collection, 40);
+				show_all_vector_information(course_information_collection);
 				break;
 			case '6':
 				cout << "Grade" << "  " << "Point represent" << endl;
-				show_all_vector_information(grade_point_collection, 10);
+				show_all_vector_information(grade_point_collection);
 				break;
 			default:
 				cout << "No such function option " << option << endl;
@@ -1094,7 +1148,7 @@ void F5() {
 }
 
 void F6() {
-	//Made by 24092222A,24037915A
+	//Made by 24004908A,24037915A
 	char confirm;
 	do {
 		cout << "Confirm exit (Y/N): ";
@@ -1118,8 +1172,8 @@ void F7() {
 	string sequence = "";
 	vector <vector <string>> major_ouput;
 	int sum = 0, order = 0;
-	menu_word_output(-1, "Show major by total number of attendance by ASC or DESC: ");
-	getline(cin, sequence);
+	/*menu_word_output(-1, "Show major by total number of attendance by ASC or DESC: ");
+	getline(cin, sequence);*/
 
 	for (int i = 0; i < major_collection.size(); i++) {
 		sum = 0;
@@ -1130,7 +1184,7 @@ void F7() {
 		}
 		major_ouput.push_back({ major_collection[i],to_string(sum) });
 	}
-	show_all_vector_information(major_ouput, 30);
+	show_all_vector_information(major_ouput);
 }
 
 int main() {
