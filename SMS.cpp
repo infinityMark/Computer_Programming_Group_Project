@@ -1093,7 +1093,7 @@ void F5() {
 }
 
 void F6() {
-	//Made by 24004908A,24037915A
+	//Made by 24092222A,24037915A
 	char confirm;
 	do {
 		cout << "Confirm exit (Y/N): ";
