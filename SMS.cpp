@@ -588,7 +588,7 @@ void F3() {
 					menu_word_output(i + 1, major_collection[i]);
 							
 			}
-			cout << "New Major: ________________\n";
+			menu_word_output(major_collection.size() + 1, "Create new major");
 			cout << "Please type the Major Name. Also you can add a new Major \n";
 			cout << "Major: ";
 			getline(cin, major);
@@ -1129,7 +1129,6 @@ void F7() {
 		}
 		major_ouput.push_back({ major_collection[i],to_string(sum) });
 	}
-
 	show_all_vector_information(major_ouput, 30);
 }
 
