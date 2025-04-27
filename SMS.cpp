@@ -161,6 +161,7 @@ public:
 		return credits;
 	}
 	void printSortedSubjects() {
+		const int TITLE_MAX_WIDTH = 40;
 		//Made by 24004908A
 		// 冒泡排序按科目代码排序
 		if (subject_information.size() <= 0) {
@@ -190,6 +191,9 @@ public:
 						credit = course_information_collection[j][2];
 						break;
 					}
+				}
+				if (title.length() > TITLE_MAX_WIDTH) {
+					title = title.substr(0, TITLE_MAX_WIDTH);
 				}
 				cout << left << setw(8) << code
 					<< " " << setw(40) << title
@@ -652,8 +656,11 @@ void F3() {
 
 void show_edited_information(string before, string current) {
 	//Made by 24127656A
-	//int margin = abs(current.size() - before.size());
-	cout << "Before" << setw(before.length() + 5) << "Current" << endl;
+	int width = max(before.size(), current.size()) + 5;
+	if (current.length() > before.length()) {
+		width -= 6;
+	}
+	cout << "Before" << setw(width) << "Current" << endl;
 	copy_character("-", before.size(), 0);
 	cout << setw(5);
 	copy_character("-", current.size(), 1);
@@ -710,15 +717,35 @@ bool subject_code_valid_check(string code) {
 
 void show_all_vector_information(vector<vector <string>> element, int space) {
 	//Made by 24127656A
+	// First, find the maximum width for each column
+	vector<size_t> column_widths(element[0].size(), 0); // Initialize with 0 for each column
+
 	for (int i = 0; i < element.size(); i++) {
 		for (int j = 0; j < element[i].size(); j++) {
-			cout << left << setw(space) << element[i][j];
+			if (element[i][j].length() > column_widths[j]) {
+				column_widths[j] = element[i][j].length();
+			}
+		}
+	}
+
+	// Add some padding (e.g., 2 extra spaces) for better readability
+	for (auto& width : column_widths) {
+		width += 2;
+	}
+
+	// Then print using the calculated widths
+	for (int i = 0; i < element.size(); i++) {
+		for (int j = 0; j < element[i].size(); j++) {
+			cout << left << setw(column_widths[j] + 4) << element[i][j];
 		}
 		cout << endl;
 	}
 }
 
 bool check_current_data_isCode(string check) {
+	if (check.empty()) {
+		return false;
+	}
 	for (int i = 0; i < check.length(); i++) {
 		if (!(check[i] >= '0' && check[i] <= '9')) {
 			return false;
@@ -777,7 +804,7 @@ void F4() {
 			menu_word_output(5, "Show all subject provided");
 			menu_word_output(6, "Show the grade point");
 			copy_character("*", 29, 1);
-			cout << "Option (1-4): ";
+			cout << "Option (1-6): ";
 			cin >> option;
 			cin.ignore();
 
@@ -818,6 +845,7 @@ void F4() {
 				copy_character("-", previous_data.length(), 1);
 				cout << endl;
 				printMajor_Provided(previous_data);
+				copy_character("-", 10, 1);
 				cout << "Enter a new major to the student " << "(" << inputed_ID << "), you may input relevant number or full name: ";
 				getline(cin, current_data);
 
@@ -827,7 +855,7 @@ void F4() {
 				cin.ignore();
 				cout << endl;
 
-				if (check_current_data_isCode(current_data) ==true && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
+				if (check_current_data_isCode(current_data) == true && stoi(current_data) >= 1 && stoi(current_data) <= major_collection.size()) { // input code
 					if (confirmation == "Y" || confirmation == "y") {
 						student_record_collection[direct_object_location].setMajor(major_collection[stoi(current_data) - 1]);
 						show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
@@ -865,8 +893,9 @@ void F4() {
 				student_record_collection[direct_object_location].printSortedSubjects();
 				trial_time = 0;
 				cout << endl;
-				menu_word_output(-1, "All subject provided");
+				menu_word_output(-1, "All subject provided:");
 				show_all_vector_information(course_information_collection, 40);
+				copy_character("-", 10, 1);
 				cout << "Which subject do you want to change" << endl;
 				do {
 					cout << "Enter subject code: " << endl << endl;
@@ -954,38 +983,43 @@ void F4() {
 						menu_word_output(-1, "Please input the new subject's credit:");
 						getline(cin, temp);
 
-						if (temp >= "2" && temp <= "5") {
-							cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
-							getline(cin, confirmation);
-							cout << endl;
+						if (current_data.length() <= 40) {
+							if (temp >= "2" && temp <= "5") {
+								cout << "Do you confirm the change? Put Y or y for yes, put N or n for no: ";
+								getline(cin, confirmation);
+								cout << endl;
 
-							if (confirmation == "Y" || confirmation == "y") {
-								current_data = major_upper(current_data);
-								addCourse_information_collection(previous_data, current_data, temp);
-								//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
-								menu_word_output(-1, "The subject is going to add into the student's subject lists");
-								menu_word_output(-1, "Please input the subject's grade to the student:");
-								getline(cin, current_data);
-								if (returnExist(current_data, grade_point_collection, 0)) {
-									student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
-									float new_gpa = student_record_collection[direct_object_location].calculateGPA();
-									student_record_collection[direct_object_location].setGPA(new_gpa);
+								if (confirmation == "Y" || confirmation == "y") {
+									current_data = major_upper(current_data);
+									addCourse_information_collection(previous_data, current_data, temp);
+									//show_edited_information(previous_data, student_record_collection[direct_object_location].getMajor());
+									menu_word_output(-1, "The subject is going to add into the student's subject lists");
+									menu_word_output(-1, "Please input the subject's grade to the student:");
+									getline(cin, current_data);
+									if (returnExist(current_data, grade_point_collection, 0)) {
+										student_record_collection[direct_object_location].addSubject_information(previous_data, current_data);
+										float new_gpa = student_record_collection[direct_object_location].calculateGPA();
+										student_record_collection[direct_object_location].setGPA(new_gpa);
 
-									cout << "The change is successfully." << endl;
+										cout << "The change is successfully." << endl;
+									}
+									else {
+										menu_word_output(-1, "You enter invalid grade point!");
+									}
+								}
+								else if (confirmation == "N" || confirmation == "n") {
+									cout << "The change is readly withdraw." << endl;
 								}
 								else {
-									menu_word_output(-1, "You enter invalid grade point!");
+									cout << "Invalid input!";
 								}
 							}
-							else if (confirmation == "N" || confirmation == "n") {
-								cout << "The change is readly withdraw." << endl;
-							}
 							else {
-								cout << "Invalid input!";
+								menu_word_output(-1, "You type invalid credit");
 							}
 						}
 						else {
-							menu_word_output(-1, "You type invalid credit");
+							menu_word_output(-1, "Subject title length can not over 40 characters");
 						}
 					}
 				}
