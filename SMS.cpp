@@ -161,6 +161,7 @@ public:
 		return credits;
 	}
 	void printSortedSubjects() {
+		const int TITLE_MAX_WIDTH = 30;
 		//Made by 24004908A
 		// 冒泡排序按科目代码排序
 		if (subject_information.size() <= 0) {
@@ -190,6 +191,9 @@ public:
 						credit = course_information_collection[j][2];
 						break;
 					}
+				}
+				if (title.length() > TITLE_MAX_WIDTH) {
+					title = title.substr(0, TITLE_MAX_WIDTH) + "...";
 				}
 				cout << left << setw(8) << code
 					<< " " << setw(40) << title
