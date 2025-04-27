@@ -1137,7 +1137,7 @@ void F4() {
 				break;
 			case '4':
 				cout << "You are returing to the Main Menu." << endl;
-				//loading_animation();
+				loading_animation();
 				break;
 			case '5':
 				menu_word_output(-1, "Subject information:");
@@ -1250,7 +1250,7 @@ int main() {
 	char prog_choice;
 	bool loading_data = false;
 
-	//loading_animation();
+	loading_animation();
 
 	menu_word_output(-1, "Welcome to use Student Management System");
 
