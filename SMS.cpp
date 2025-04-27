@@ -332,7 +332,7 @@ void showInfo() {
 		{"YIM Chun Hei","24004908A","B07A"},
 		{"MING Tsz Ching","24052040A","B07B"},
 		{"Sze To Siu Lung", "24092222A", "B07B"},
-		{"LEUNG Hon Hin", "24XXXXXXA", "B07A"}
+		{"LEUNG Hon Hin", "24010190A", "B07A"}
 	};
 	menu_word_output(-1, "Group Number: 7");
 	cout << endl;
