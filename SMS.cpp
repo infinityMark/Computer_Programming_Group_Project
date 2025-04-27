@@ -586,31 +586,45 @@ void F3() {
 		valid = false;
 		while (retries < 3) {
 			for (size_t i = 0; i < major_collection.size(); i++) {
-				{
-					menu_word_output(i + 1, major_collection[i]);
-				}
+				menu_word_output(i + 1, major_collection[i]);
 			}
-			menu_word_output(major_collection.size() + 1, "Create new major");
-			cout << "Please type the Major Name. Also you can add a new Major \n";
-			cout << "Major: ";
+			menu_word_output(major_collection.size() + 1, "Create New Major");
+			cout << "Please type the Name/Number of Major. Also you can add a new Major.\n";
+			cout << "Major ¡]max 30 chars): ";
 			getline(cin, major);
 			major = major_upper(major);
 			if (!(major.empty()) && major.length() <= 30) {
-				if (major == "Information Engineering") {
-					major = "Information Engineering";
+				bool finds = false;
+				for (size_t i = 0; i < major_collection.size(); i++) {
+					if (major == major_collection[i] || (major == to_string(i + 1))) {
+						major = major_collection[i];
+						finds = true;
+						if (finds == true) {
+							cout << "The Major have been found in system.\n";
+							break;
+						}
+					}
 				}
-				else if (major_upper(major) == "Civil Engineering") {
-					major = "Civil Engineering";
-				}
-				else if (major_upper(major) == "Global Business") {
-					major = "Gobal Business";
-				}
-				else if (major_upper(major) == "Educational Psychology") {
-					major = "Educational Psychology";
-				}
-				else {
-					major_collection.push_back(major_upper(major));
-					cout << "New major added successfully.\n";
+				bool finds2 = false;
+				if (finds == false) {
+					cout << "Please input New Major Name One More Time \n";
+					cout << "New Major ¡]max 30 chars): ";
+					getline(cin, major);
+					major = major_upper(major);
+					for (size_t i = 0; i < major_collection.size(); i++) {
+						if (major == major_collection[i]) {
+							major = major_collection[i];
+							finds2 = true;
+							if (finds2 == true) {
+								cout << "The Major have been found in system.\n";
+								break;
+							}
+						}
+					}
+					if (finds2 == false) {
+						major_collection.push_back(major_upper(major));
+						cout << "New major added to system successfully.\n";
+					}
 				}
 			}
 			else {
