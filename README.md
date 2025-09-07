@@ -3,7 +3,7 @@
 # This is a group project about the school HKCC in SEHH2042 (Computer Programming) 
 > ## corresponding group project requirement: 
 
-# The final grade of the project is invisible
+# The final grade of the project is ***A+***
 &nbsp;
 &nbsp;
 &nbsp;
