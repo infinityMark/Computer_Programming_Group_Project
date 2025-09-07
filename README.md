@@ -12,6 +12,6 @@
 > # Name: Wu Jiacheng
 > # Github: infinityMark
 > # Email: jiachengwu14@gmail.com
-> # Position: data structure design, Function 4 implementation, and Function 6 implementation
+> # Responsible for data structure design, object design, Function 4 implementation, and Function 6 implementation
 
 ---
